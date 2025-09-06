@@ -4,7 +4,11 @@ You can use this file to perform app-level initialization, but the primary
 purpose of the file is to pass control to the app’s first module.
 */
 
+import { initialize } from '@nativescript-community/ui-image';
 import { Application } from '@nativescript/core'
+
+
+initialize({ isDownsampleEnabled: true });
 
 Application.run({ moduleName: 'app-root' })
 

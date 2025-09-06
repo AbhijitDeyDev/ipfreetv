@@ -1,0 +1,11 @@
+<ActionBar
+    flat="true"
+    loaded="onLoaded">
+    <NavigationButton
+        tap="{{goBack}}"
+        visibility="{{hideBackBtn === 'true' ? 'hidden' : 'visible'}}"
+        android.systemIcon="ic_menu_back" />
+    <Label
+        text="{{title}}"
+        class="text-[var(--secondary)] text-xl" />
+</ActionBar>

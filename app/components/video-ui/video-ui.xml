@@ -1,0 +1,19 @@
+<Page
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:VP="@nstudio/nativescript-exoplayer"
+    shownModally="onShownModally">
+    <GridLayout
+        rows="*"
+        columns="*"
+        class="bg-black">
+        <VP:Video
+            id="video_player"
+            src="{{source}}"
+            srcType="3"
+            enableSubtitles="true"
+            controls="true"
+            autoplay="true"
+            backgroundAudio="false"
+            class="w-full h-full" />
+    </GridLayout>
+</Page>

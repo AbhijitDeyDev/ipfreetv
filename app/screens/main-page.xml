@@ -1,0 +1,32 @@
+<Page
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:ab="components/action-bar"
+    xmlns:ui="@nativescript-community/ui-image"
+    navigatingTo="navigatingTo">
+
+    <ab:action-bar title="IPFreeTV" hideBackBtn="true" />
+
+    <GridLayout
+        columns="*"
+        rows="*">
+        <ListView items="{{ items }}" itemTap="{{onItemTap}}">
+            <ListView.itemTemplate>
+                <GridLayout padding="16" columns="50, *">
+                    <ui:Img
+                        src="{{$value['tvg-logo']}}"
+                        placeholderImageUri="~/assets/icons/hdtv.png"
+                        failureImageUri="~/assets/icons/hdtv.png"
+                        stretch="centerInside"
+                        width="50"
+                        height="50"
+                        automationText="{{name}}" />
+                    <Label
+                        text="{{ name }}"
+                        col="1"
+                        textWrap="true"
+                        marginLeft="8" />
+                </GridLayout>
+            </ListView.itemTemplate>
+        </ListView>
+    </GridLayout>
+</Page>

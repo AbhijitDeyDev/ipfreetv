@@ -1,6 +1,10 @@
-﻿@import '@nativescript/theme/css/core.css';
-@import '@nativescript/theme/css/default.css';
+﻿@import 'tailwindcss';
 
-Button.-primary {
-  font-size: 18;
+:root{
+    --primary: #08CB00;
+    --secondary: #253900;
+    --text: #000000;
+    --bg: #EEEEEE;
+    --font-bold: 'Roboto', 'Roboto-Bold';
+    --font-regular: 'Roboto', 'Roboto-Regular';
 }

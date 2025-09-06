@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "tailwindCSS.includeLanguages": {
+        "xml": "html"
+    },
+    "xml.fileAssociations": [
+        {
+            "pattern": "**/*.xml",
+            "systemId": "http://schemas.nativescript.org/tns.xsd"
+        }
+    ],
+    "xml.validation.enabled": false
+}
