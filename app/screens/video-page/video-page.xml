@@ -1,0 +1,27 @@
+<Page
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:VP="@nstudio/nativescript-exoplayer"
+    navigatingTo="onNavigatingTo">
+    <AbsoluteLayout
+        class="bg-black">
+        <VP:Video
+            id="video_player"
+            src="{{source}}"
+            srcType="3"
+            enableSubtitles="true"
+            controls="true"
+            autoplay="true"
+            fill="{{isFullscreen ? 'aspectFill' : 'default'}}"
+            backgroundAudio="false"
+            class="w-full h-full" />
+        <Image
+            id="fullscreen_toggle"
+            src="{{'~/assets/icons/' + (isFullscreen ? 'fullscreen-exit.png' : 'fullscreen-enter.png')}}"
+            width="20"
+            height="20"
+            top="50"
+            left="380"
+            automationText="Fullscreen"
+            ontap="{{ toggleFullscreen }}" />
+    </AbsoluteLayout>
+</Page>

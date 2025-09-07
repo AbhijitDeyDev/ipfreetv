@@ -1,11 +1,51 @@
-<ActionBar
-    flat="true"
+<StackLayout
+    xmlns="http://schemas.nativescript.org/tns.xsd"
     loaded="onLoaded">
-    <NavigationButton
-        tap="{{goBack}}"
-        visibility="{{hideBackBtn === 'true' ? 'hidden' : 'visible'}}"
-        android.systemIcon="ic_menu_back" />
-    <Label
-        text="{{title}}"
-        class="text-[var(--secondary)] text-xl" />
-</ActionBar>
+    <GridLayout
+        columns="auto, *, auto"
+        class="bg-[var(--primary)] px-2.5"
+        hidden="{{searchMode}}">
+        <ContentView
+            col="0"
+            ontap="{{goBack}}"
+            visibility="{{hideBackBtn === 'true' ? 'hidden' : 'visible'}}">
+            <Image
+                src="~/assets/icons/arrow-left.png"
+                width="20"
+                height="20"
+                class="mx-2" />
+        </ContentView>
+        <Label
+            col="1"
+            text="{{title}}"
+            class="text-center text-[var(--secondary)] text-xl" />
+        <ContentView
+            col="2"
+            ontap="{{toggleSearchMode}}"
+            visibility="{{showSearch === 'true' ? 'visible' : 'hidden'}}">
+            <Image
+                src="~/assets/icons/search.png"
+                width="20"
+                height="20"
+                class="mx-2" />
+        </ContentView>
+    </GridLayout>
+
+    <GridLayout
+        columns="auto, *"
+        hidden="{{!searchMode}}">
+        <ContentView
+            col="0"
+            ontap="{{toggleSearchMode}}">
+            <Image
+                src="~/assets/icons/arrow-left.png"
+                width="20"
+                height="20"
+                class="mx-2" />
+        </ContentView>
+        <SearchBar
+            col="1"
+            id="search_input"
+            hint="Search channels..." />
+    </GridLayout>
+</StackLayout>
