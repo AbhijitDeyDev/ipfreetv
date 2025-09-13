@@ -1,0 +1,64 @@
+<Page
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:ab="components/action-bar"
+    xmlns:ui="@nativescript-community/ui-image"
+    navigatingTo="navigatingTo">
+    <GridLayout
+        columns="*"
+        rows="50, *">
+
+        <ab:action-bar
+            row="0"
+            title="{{'All '+ (items.length) + ' ' + category +' channels'}}"
+            showSearch="true"
+            searchInputChange="{{ $parent.onSearchInputChange }}" />
+
+        <ListView
+            row="1"
+            items="{{ items }}"
+            itemTap="{{onItemTap}}">
+            <ListView.itemTemplate>
+                <GridLayout padding="16" columns="50, *">
+                    <ui:Img
+                        src="{{$value['tvg-logo']}}"
+                        placeholderImageUri="~/assets/icons/hdtv.png"
+                        failureImageUri="~/assets/icons/hdtv.png"
+                        stretch="centerInside"
+                        width="50"
+                        height="50"
+                        automationText="{{name}}" />
+                    <StackLayout
+                        col="1"
+                        marginLeft="10">
+                        <Label
+                            text="{{ name }}"
+                            textWrap="true"
+                            textTransform="none"
+                            class="font-bolder text-[16px] text-[var(--secondary)]" />
+                        <Label
+                            text="{{ $value['group-title'].split(';').join(', ') }}"
+                            textWrap="true" />
+                    </StackLayout>
+                </GridLayout>
+            </ListView.itemTemplate>
+        </ListView>
+
+        <StackLayout
+            row="1"
+            verticalAlignment="center"
+            class="p-8"
+            hidden="{{!!items.length}}">
+            <Image
+                src="~/assets/icons/all-channel.png"
+                width="50"
+                height="50"
+                tintColor="#08CB00"
+                class="mb-5" />
+            <Label
+                text="No channel found"
+                textWrap="true"
+                textTransform="none"
+                class="text-center text-lg mb-5" />
+        </StackLayout>
+    </GridLayout>
+</Page>

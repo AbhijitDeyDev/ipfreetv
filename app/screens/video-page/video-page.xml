@@ -20,7 +20,7 @@
             width="20"
             height="20"
             top="50"
-            left="380"
+            left="{{fullscreenTogglePosition}}"
             automationText="Fullscreen"
             ontap="{{ toggleFullscreen }}" />
     </AbsoluteLayout>

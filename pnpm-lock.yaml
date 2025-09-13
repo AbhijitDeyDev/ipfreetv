@@ -11,6 +11,9 @@ importers:
       '@nativescript-community/ui-image':
         specifier: ^4.5.5
         version: 4.5.5
+      '@nativescript-community/ui-material-ripple':
+        specifier: ^7.2.71
+        version: 7.2.71
       '@nativescript/core':
         specifier: ~8.9.0
         version: 8.9.7
@@ -412,6 +415,12 @@ packages:
 
   '@nativescript-community/ui-image@4.5.5':
     resolution: {integrity: sha512-M45/sw5V14uPAOhVE7KtE6rVimaUfzB5asyOl4dZiW20kALrlm6davsq4Yfb05OcZS18HuZHVw2kyV9AdgTITg==}
+
+  '@nativescript-community/ui-material-core@7.2.71':
+    resolution: {integrity: sha512-o2W1av/ev4RzFqXe7BLWFw1ueNLX/6jwSSGRwjnbEFMCxRjPWBNspgR0X3Dhq+4w88Pgl/0pmsh36ok9YdDzhA==}
+
+  '@nativescript-community/ui-material-ripple@7.2.71':
+    resolution: {integrity: sha512-stMCMSwTqVEAXlVp4rZqNSKiV0buyvClhc1z7kc1CvvGcOTELpdthMkWBBIbrLKHhF9Qbt/tVald9WC3fCDnyg==}
 
   '@nativescript/android@8.9.1':
     resolution: {integrity: sha512-9xy7Vp77icneQCv0fRVwYfJhuhqFYY3/nPoB7OeG/I78WITPUm+2fNyBj0A6Uu4qJ5/rhwiNAWCaVX0IGBs0oQ==}
@@ -2868,6 +2877,12 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
   '@nativescript-community/ui-image@4.5.5': {}
+
+  '@nativescript-community/ui-material-core@7.2.71': {}
+
+  '@nativescript-community/ui-material-ripple@7.2.71':
+    dependencies:
+      '@nativescript-community/ui-material-core': 7.2.71
 
   '@nativescript/android@8.9.1': {}
 

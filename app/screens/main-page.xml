@@ -1,40 +1,27 @@
 <Page
     xmlns="http://schemas.nativescript.org/tns.xsd"
-    xmlns:ab="components/action-bar"
-    xmlns:ui="@nativescript-community/ui-image"
-    navigatingTo="navigatingTo">
-    <GridLayout
-        columns="*"
-        rows="50, *">
-
-        <ab:action-bar
-            row="0"
-            title="IPFreeTV"
-            hideBackBtn="true"
-            showSearch="true"
-            searchInputChange="{{ $parent.onSearchInputChange }}" />
-
-        <ListView
-            row="1"
-            items="{{ items }}"
-            itemTap="{{onItemTap}}">
-            <ListView.itemTemplate>
-                <GridLayout padding="16" columns="50, *">
-                    <ui:Img
-                        src="{{$value['tvg-logo']}}"
-                        placeholderImageUri="~/assets/icons/hdtv.png"
-                        failureImageUri="~/assets/icons/hdtv.png"
-                        stretch="centerInside"
-                        width="50"
-                        height="50"
-                        automationText="{{name}}" />
-                    <Label
-                        text="{{ name }}"
-                        col="1"
-                        textWrap="true"
-                        marginLeft="8" />
-                </GridLayout>
-            </ListView.itemTemplate>
-        </ListView>
-    </GridLayout>
+    navigatingTo="onNavigatingTo">
+    <TabView
+        androidTabsPosition="bottom"
+        androidSelectedTabHighlightColor="#ffffff"
+        tabTextColor="#253900">
+        <TabViewItem
+            title="Categories"
+            textTransform="capitalize"
+            iconSource="~/assets/icons/category-white.png">
+            <Frame defaultPage="screens/category-page/category-page" />
+        </TabViewItem>
+        <TabViewItem
+            title="Favorites"
+            textTransform="capitalize"
+            iconSource="~/assets/icons/favorite.png">
+            <Frame defaultPage="screens/favorite-page/favorite-page" />
+        </TabViewItem>
+        <TabViewItem
+            title="All Channels"
+            textTransform="capitalize"
+            iconSource="~/assets/icons/all-channel.png">
+            <Frame defaultPage="screens/all-channel-page/all-channel-page" />
+        </TabViewItem>
+    </TabView>
 </Page>

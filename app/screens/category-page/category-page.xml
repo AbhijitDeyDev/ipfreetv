@@ -1,0 +1,62 @@
+<Page
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:ab="components/action-bar"
+    xmlns:ui="@nativescript-community/ui-image"
+    navigatingTo="navigatingTo">
+    <GridLayout
+        columns="*"
+        rows="50, *">
+
+        <ab:action-bar
+            row="0"
+            title="IPFreeTV"
+            hideBackBtn="true"
+            showSearch="true"
+            searchInputChange="{{ $parent.onSearchInputChange }}" />
+
+        <ListView
+            row="1"
+            items="{{ items }}"
+            itemTap="{{onItemTap}}">
+            <ListView.itemTemplate>
+                <GridLayout padding="16" columns="50, *">
+                    <ui:Img
+                        src="~/assets/icons/category.png"
+                        stretch="centerInside"
+                        width="50"
+                        height="50"
+                        automationText="{{name}}" />
+                    <StackLayout
+                        col="1"
+                        marginLeft="8">
+                        <Label
+                            text="{{ name }}"
+                            textWrap="true"
+                            class="font-bolder text-2xl text-[var(--secondary)]" />
+                        <Label
+                            text="{{ count + ' channel' + (count > 1 ? 's' : '') }}"
+                            textWrap="true" />
+                    </StackLayout>
+                </GridLayout>
+            </ListView.itemTemplate>
+        </ListView>
+
+        <StackLayout
+            row="1"
+            verticalAlignment="center"
+            class="p-8"
+            hidden="{{!!items.length}}">
+            <Image
+                src="~/assets/icons/category.png"
+                width="50"
+                height="50"
+                tintColor="#08CB00"
+                class="mb-5" />
+            <Label
+                text="No category found"
+                textWrap="true"
+                textTransform="none"
+                class="text-center text-lg mb-5" />
+        </StackLayout>
+    </GridLayout>
+</Page>

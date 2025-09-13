@@ -18,7 +18,8 @@
         <Label
             col="1"
             text="{{title}}"
-            class="text-center text-[var(--secondary)] text-xl" />
+            textTransform="none"
+            class="text-center text-white text-xl" />
         <ContentView
             col="2"
             ontap="{{toggleSearchMode}}"

@@ -1,5 +1,5 @@
-import { Application, fromObject, Image, NavigatedData, Page, ShownModallyData, TapGestureEventData } from "@nativescript/core";
-import { Video, VideoFill } from "@nstudio/nativescript-exoplayer";
+import { Application, fromObject, NavigatedData, Page, Screen, TapGestureEventData } from "@nativescript/core";
+import { Video } from "@nstudio/nativescript-exoplayer";
 import { getCurrentActivity } from "@nativescript/core/utils/android";
 
 export function onNavigatingTo(args: NavigatedData) {
@@ -11,7 +11,8 @@ export function onNavigatingTo(args: NavigatedData) {
   const viewModel = fromObject({
     source: context.source,
     isFullscreen: false,
-    toggleFullscreen
+    toggleFullscreen,
+    fullscreenTogglePosition: Screen.mainScreen.widthDIPs - 30
   });
 
   if (__ANDROID__) {
@@ -44,11 +45,8 @@ export function onNavigatingTo(args: NavigatedData) {
   }
 
   function toggleFullscreen(eventData: TapGestureEventData) {
-
     const newFullscreenState = !viewModel.get('isFullscreen');
     viewModel.set('isFullscreen', newFullscreenState);
-
-    eventData.view.left = newFullscreenState ? 775 : 380;
 
     if (__ANDROID__) {
       if (newFullscreenState) {
@@ -58,7 +56,7 @@ export function onNavigatingTo(args: NavigatedData) {
           .hide(android.view.WindowInsetsController.BEHAVIOR_DEFAULT);
 
         getCurrentActivity()
-          .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+          .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
       } else {
         getCurrentActivity()
           .getWindow()
@@ -69,6 +67,10 @@ export function onNavigatingTo(args: NavigatedData) {
           .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
       }
     }
+
+    setTimeout(() => {
+      eventData.view.left = Screen.mainScreen.widthDIPs - (newFullscreenState ? 100 : 30);
+    }, 200);
   }
 
   page.bindingContext = viewModel;
