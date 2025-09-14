@@ -1,4 +1,4 @@
-import { Application, EventData, fromObject, LoadEventData, Observable, SearchBar, StackLayout } from "@nativescript/core";
+import { Application, EventData, fromObject, SearchBar, StackLayout } from "@nativescript/core";
 
 interface PropsType extends StackLayout {
   title?: string;

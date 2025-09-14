@@ -1,6 +1,7 @@
 import { EventData, fromObject, ItemEventData, ListView, Page } from '@nativescript/core';
 import { getCurrentActivity } from '@nativescript/core/utils/android';
 import IndianChannels from "~/assets/json/IndianChannels.json";
+import { getTopFrame } from '../../common/helpers';
 
 export function navigatingTo(args: EventData) {
   const page = <Page> args.object;
@@ -13,16 +14,15 @@ export function navigatingTo(args: EventData) {
       .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
   }
 
-  const searchInputModel = fromObject({ searchInput: '' });
-
   const viewModel = fromObject({
     items: categories,
-    onItemTap({ object, index }: ItemEventData) {
-      const listView = object as ListView;
-      page.frame.page.frame.navigate({
-        moduleName: 'screens/channel-by-category-page/channel-by-category-page',
-        context: { category: listView.items[index].name }
-      });
+    onItemTap: (category: string) => {
+      return () => {
+        getTopFrame(page).navigate({
+          moduleName: 'screens/channel-by-category-page/channel-by-category-page',
+          context: { category }
+        });
+      };
     },
     onSearchInputChange,
   });
@@ -35,10 +35,6 @@ export function navigatingTo(args: EventData) {
     );
   }
 
-  page.on("navigatingTo", () => {
-    searchInputModel.off("searchInput");
-    page.off("navigatingTo");
-  });
   page.bindingContext = viewModel;
 }
 

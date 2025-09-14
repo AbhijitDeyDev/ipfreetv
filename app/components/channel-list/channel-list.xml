@@ -1,0 +1,41 @@
+<ListView
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:ui="@nativescript-community/ui-image"
+    xmlns:mdr="@nativescript-community/ui-material-ripple"
+    items="{{ channels }}"
+    loaded="onLoaded">
+    <ListView.itemTemplate>
+        <GridLayout
+            columns="*"
+            rows="*"
+            ontap="{{$parent.onItemEvent($value)}}"
+            onlongpress="{{$parent.onItemEvent($value)}}">
+            <GridLayout
+                col="0"
+                padding="16"
+                columns="50, *">
+                <ui:Img
+                    src="{{$value['tvg-logo']}}"
+                    placeholderImageUri="~/assets/icons/hdtv.png"
+                    failureImageUri="~/assets/icons/hdtv.png"
+                    stretch="centerInside"
+                    width="50"
+                    height="50"
+                    automationText="{{name}}" />
+                <StackLayout
+                    col="1"
+                    marginLeft="10">
+                    <Label
+                        text="{{ name }}"
+                        textWrap="true"
+                        textTransform="none"
+                        class="font-bolder text-[16px] text-[var(--secondary)]" />
+                    <Label
+                        text="{{ $value['group-title'].split(';').join(', ') }}"
+                        textWrap="true" />
+                </StackLayout>
+            </GridLayout>
+            <mdr:Ripple rippleColor="#08CB00" />
+        </GridLayout>
+    </ListView.itemTemplate>
+</ListView>

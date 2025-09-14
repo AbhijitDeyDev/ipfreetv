@@ -1,47 +1,39 @@
-import { ApplicationSettings, EventData, fromObject, ItemEventData, ListView, Page } from "@nativescript/core";
-import IndianChannels from "~/assets/json/IndianChannels.json";
-import { STORAGE_KEYS } from "../../common/constant";
+import { EventData, fromObject, ObservableArray, Page } from "@nativescript/core";
+import favoriteChannelStore from "../../common/store/favorite-channels";
 
 export function navigatingTo(args: EventData) {
   const page = <Page> args.object;
   page.actionBarHidden = true;
 
-  const channels = getFavoriteChannels();
-
-  const searchInputModel = fromObject({ searchInput: '' });
+  const channels = favoriteChannelStore.favoriteChannels;
+  const channelsModel = new ObservableArray(...channels);
+  let currentSearchInput = "";
 
   const viewModel = fromObject({
-    items: channels,
-    onItemTap({ object, index }: ItemEventData) {
-      const listView = object as ListView;
-      page.frame.page.frame.navigate({
-        moduleName: 'screens/video-page/video-page',
-        context: { source: listView.items[index].url }
-      })
-    },
+    channels: channelsModel,
     onSearchInputChange,
   });
 
   function onSearchInputChange(searchInput: string) {
-    viewModel.set('items',
-      searchInput.trim().length ?
-        channels.filter(channel => channel.name.toLowerCase().includes(searchInput)) :
-        channels
-    );
+    currentSearchInput = searchInput;
+    const newChannels = searchInput.trim().length ?
+      channels.filter(channel => channel.name.toLowerCase().includes(searchInput)) :
+      channels;
+    if (newChannels.length !== channelsModel.length) {
+      channelsModel.splice(0, channels.length, ...newChannels);
+      viewModel.notifyPropertyChange('channels', newChannels);
+    }
   }
 
+  channels.on('change', () => {
+    channelsModel.splice(0, channelsModel.length, ...channels);
+    viewModel.notifyPropertyChange('channels', channelsModel);
+    if (currentSearchInput)
+      onSearchInputChange(currentSearchInput);
+  });
   page.on("navigatingTo", () => {
-    searchInputModel.off("searchInput");
+    channels.off('change');
     page.off("navigatingTo");
   });
   page.bindingContext = viewModel;
-}
-
-function getFavoriteChannels() {
-  const favoriteChannelIds = ApplicationSettings
-    .getAllKeys()
-    .filter(key => key.startsWith(STORAGE_KEYS.FavoriteChannel))
-    .map(key => Number(key.split(':')[1]));
-  const favoriteChannelIdsSet = new Set(favoriteChannelIds);
-  return IndianChannels.filter(({ id }) => favoriteChannelIdsSet.has(id));
 }

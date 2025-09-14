@@ -2,6 +2,7 @@
     xmlns="http://schemas.nativescript.org/tns.xsd"
     xmlns:ab="components/action-bar"
     xmlns:ui="@nativescript-community/ui-image"
+    xmlns:mdr="@nativescript-community/ui-material-ripple"
     navigatingTo="navigatingTo">
     <GridLayout
         columns="*"
@@ -16,27 +17,32 @@
 
         <ListView
             row="1"
-            items="{{ items }}"
-            itemTap="{{onItemTap}}">
+            items="{{ items }}">
             <ListView.itemTemplate>
-                <GridLayout padding="16" columns="50, *">
-                    <ui:Img
-                        src="~/assets/icons/category.png"
-                        stretch="centerInside"
-                        width="50"
-                        height="50"
-                        automationText="{{name}}" />
-                    <StackLayout
-                        col="1"
-                        marginLeft="8">
-                        <Label
-                            text="{{ name }}"
-                            textWrap="true"
-                            class="font-bolder text-2xl text-[var(--secondary)]" />
-                        <Label
-                            text="{{ count + ' channel' + (count > 1 ? 's' : '') }}"
-                            textWrap="true" />
-                    </StackLayout>
+                <GridLayout
+                    columns="*"
+                    rows="*"
+                    ontap="{{$parent.onItemTap(name)}}">
+                    <GridLayout padding="16" columns="50, *">
+                        <ui:Img
+                            src="~/assets/icons/category.png"
+                            stretch="centerInside"
+                            width="50"
+                            height="50"
+                            automationText="{{name}}" />
+                        <StackLayout
+                            col="1"
+                            marginLeft="8">
+                            <Label
+                                text="{{ name }}"
+                                textWrap="true"
+                                class="font-bolder text-2xl text-[var(--secondary)]" />
+                            <Label
+                                text="{{ count + ' channel' + (count > 1 ? 's' : '') }}"
+                                textWrap="true" />
+                        </StackLayout>
+                    </GridLayout>
+                    <mdr:Ripple rippleColor="#08CB00" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
