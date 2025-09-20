@@ -56,7 +56,10 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+        cache: 'pnpm'
+
+    - name: Install pnpm
+      run: npm install -g pnpm
 
     - name: Setup Java JDK
       uses: actions/setup-java@v4
@@ -73,7 +76,7 @@ jobs:
         ns doctor android
 
     - name: Install dependencies
-      run: npm install
+      run: pnpm install
 
     - name: Read current package.json and nativescript.config.ts
       id: package-info
