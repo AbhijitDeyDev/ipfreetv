@@ -155,31 +155,22 @@ jobs:
         node read-config.js > config-output.txt
 
         # Extract values from output
-        CURRENT_VERSION=$(grep "CURRENT_VERSION=" config-output.txt | cut -d'=' -f2)
-        APP_NAME=$(grep "APP_NAME=" config-output.txt | cut -d'=' -f2)
-        APP_ID=$(grep "APP_ID=" config-output.txt | cut -d'=' -f2)
-        CLEAN_APP_NAME=$(grep "CLEAN_APP_NAME=" config-output.txt | cut -d'=' -f2)
+        CURRENT_VERSION=$(grep "CURRENT_VERSION=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
+        APP_NAME=$(grep "APP_NAME=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
+        APP_ID=$(grep "APP_ID=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
+        CLEAN_APP_NAME=$(grep "CLEAN_APP_NAME=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
 
         # Set GitHub Actions outputs
-        echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-        echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
-        echo "app_id=$APP_ID" >> $GITHUB_OUTPUT
-        echo "clean_app_name=$CLEAN_APP_NAME" >> $GITHUB_OUTPUT
+        {
+          echo "current_version=${CURRENT_VERSION}"
+          echo "app_name=${APP_NAME}"
+          echo "app_id=${APP_ID}"
+          echo "clean_app_name=${CLEAN_APP_NAME}"
+        } >> "$GITHUB_OUTPUT"
 
         echo "📱 App: $APP_NAME"
         echo "🔢 Current Version: $CURRENT_VERSION"
         echo "🆔 App ID: $APP_ID"
-
-        # Show what was parsed
-        echo "🔍 Parsing results:"
-        cat config-output.txt
-
-        # Show config file preview
-        if [ -f "nativescript.config.ts" ]; then
-          echo ""
-          echo "🔍 Config file preview (first 15 lines):"
-          head -15 nativescript.config.ts
-        fi
 
         # Cleanup
         rm read-config.js config-output.txt
@@ -234,9 +225,9 @@ jobs:
         UPDATED_VERSION=$(node -p "require('./package.json').version")
         echo "✅ Package.json updated to version: $UPDATED_VERSION"
 
-        # Also update package-lock.json if it exists
-        if [ -f "package-lock.json" ]; then
-          echo "📝 Updating package-lock.json version"
+        # Also update pnpm-lock.yaml if it exists
+        if [ -f "pnpm-lock.yaml" ]; then
+          echo "📝 Updating pnpm-lock.yaml version"
           npm version $NEW_VERSION --no-git-tag-version --allow-same-version
         fi
 
@@ -338,8 +329,8 @@ jobs:
 
         # Add changed files
         git add package.json
-        if [ -f "package-lock.json" ]; then
-          git add package-lock.json
+        if [ -f "pnpm-lock.yaml" ]; then
+          git add pnpm-lock.yaml
         fi
 
         # Commit the version bump
