@@ -33,7 +33,11 @@ git clone https://github.com/AbhijitDeyDev/ipfreetv.git
 cd ipfreetv
 ```
 
-2. Install dependencies:
+2. Setup NativeScript (If not already have):
+
+>Follow NativeScript setup guide: https://docs.nativescript.org/setup/
+
+4. Install dependencies:
 
 ```sh
 npm install
@@ -43,16 +47,16 @@ or
 pnpm install
 ```
 
-3. Run for Android:
+4. Run for Android:
 
 ```sh
 ns run android
 ```
 
-3. Run for iOS (iOS platform is not tested currently):
+5. Run for iOS (iOS platform is not tested currently):
 
 ```sh
-ns run iOS
+ns run ios
 ```
 
 ## Usage
