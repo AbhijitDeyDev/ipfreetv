@@ -52,10 +52,12 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Setup Node.js
+    - name: Setup PNPM
       uses: pnpm/action-setup@v2
       with:
         version: 6.32.9
+
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
