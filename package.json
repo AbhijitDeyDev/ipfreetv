@@ -1,7 +1,7 @@
 {
   "name": "ipfreetv",
   "main": "app/app.ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "@nativescript-community/ui-image": "^4.5.5",
