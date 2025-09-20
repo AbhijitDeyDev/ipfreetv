@@ -36,6 +36,9 @@ on:
 env:
   NODE_VERSION: 22
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -346,6 +349,9 @@ jobs:
         APP_NAME="${{ steps.package-info.outputs.app_name }}"
         APP_ID="${{ steps.package-info.outputs.app_id }}"
 
+        # Set repo url
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/AbhijitDeyDev/ipfreetv.git
+
         # Create annotated tag
         git tag -a "$TAG" -m "Release $TAG - $APP_NAME
 
@@ -362,6 +368,8 @@ jobs:
         git push origin "$TAG"
 
         echo "✅ Tag $TAG created and pushed"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Debug APK
       if: github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == 'both'
@@ -369,7 +377,6 @@ jobs:
       with:
         name: debug-apk-v${{ steps.build-version.outputs.version }}
         path: build-output/*debug*.apk
-        retention-days: 30
 
     - name: Upload Release APK
       if: github.event.inputs.build_type == 'release' || github.event.inputs.build_type == 'both'
@@ -377,7 +384,6 @@ jobs:
       with:
         name: release-apk-v${{ steps.build-version.outputs.version }}
         path: build-output/*release*.apk
-        retention-days: 30
 
     - name: Generate comprehensive release notes
       if: github.event.inputs.create_release == 'true'
