@@ -80,71 +80,71 @@ jobs:
       run: |
         # Create a Node.js script to read the config
         cat > read-config.js << 'EOF'
-const fs = require('fs');
-const path = require('path');
+        const fs = require('fs');
+        const path = require('path');
 
-// Read package.json version
-const packageJson = require('./package.json');
-const currentVersion = packageJson.version;
+        // Read package.json version
+        const packageJson = require('./package.json');
+        const currentVersion = packageJson.version;
 
-let appName = packageJson.name || 'IPFreeTV';
-let appId = 'com.abhijit.ipfreetv';
+        let appName = packageJson.name || 'IPFreeTV';
+        let appId = 'com.abhijit.ipfreetv';
 
-// Try to read nativescript.config.ts
-const configPath = './nativescript.config.ts';
-if (fs.existsSync(configPath)) {
-  try {
-    const configContent = fs.readFileSync(configPath, 'utf8');
+        // Try to read nativescript.config.ts
+        const configPath = './nativescript.config.ts';
+        if (fs.existsSync(configPath)) {
+          try {
+            const configContent = fs.readFileSync(configPath, 'utf8');
 
-    // Extract app ID using regex - handle various formats
-    const idMatches = [
-      /id:\s*['"`]([^'"`]*?)['"`]/,
-      /"id":\s*['"`]([^'"`]*?)['"`]/,
-      /'id':\s*['"`]([^'"`]*?)['"`]/
-    ];
+            // Extract app ID using regex - handle various formats
+            const idMatches = [
+              /id:\s*['"`]([^'"`]*?)['"`]/,
+              /"id":\s*['"`]([^'"`]*?)['"`]/,
+              /'id':\s*['"`]([^'"`]*?)['"`]/
+            ];
 
-    for (const regex of idMatches) {
-      const match = configContent.match(regex);
-      if (match) {
-        appId = match[1];
-        break;
-      }
-    }
+            for (const regex of idMatches) {
+              const match = configContent.match(regex);
+              if (match) {
+                appId = match[1];
+                break;
+              }
+            }
 
-    // Try to extract app display name - handle various formats
-    const nameMatches = [
-      /projectName:\s*['"`]([^'"`]*?)['"`]/,
-      /"projectName":\s*['"`]([^'"`]*?)['"`]/,
-      /'projectName':\s*['"`]([^'"`]*?)['"`]/
-    ];
+            // Try to extract app display name - handle various formats
+            const nameMatches = [
+              /projectName:\s*['"`]([^'"`]*?)['"`]/,
+              /"projectName":\s*['"`]([^'"`]*?)['"`]/,
+              /'projectName':\s*['"`]([^'"`]*?)['"`]/
+            ];
 
-    for (const regex of nameMatches) {
-      const match = configContent.match(regex);
-      if (match) {
-        appName = match[1];
-        break;
-      }
-    }
+            for (const regex of nameMatches) {
+              const match = configContent.match(regex);
+              if (match) {
+                appName = match[1];
+                break;
+              }
+            }
 
-    console.log('✅ Successfully parsed nativescript.config.ts');
-    console.log(`📖 Found app ID: ${appId}`);
-    console.log(`📖 Found app name: ${appName}`);
-  } catch (error) {
-    console.log('⚠️ Error parsing nativescript.config.ts:', error.message);
-  }
-} else {
-  console.log('❌ nativescript.config.ts not found, using package.json values');
-}
+            console.log('✅ Successfully parsed nativescript.config.ts');
+            console.log(`📖 Found app ID: ${appId}`);
+            console.log(`📖 Found app name: ${appName}`);
+          } catch (error) {
+            console.log('⚠️ Error parsing nativescript.config.ts:', error.message);
+          }
+        } else {
+          console.log('❌ nativescript.config.ts not found, using package.json values');
+        }
 
-// Clean app name for filename usage
-const cleanAppName = appName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+        // Clean app name for filename usage
+        const cleanAppName = appName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
 
-// Output the values
-console.log(`CURRENT_VERSION=${currentVersion}`);
-console.log(`APP_NAME=${appName}`);
-console.log(`APP_ID=${appId}`);
-console.log(`CLEAN_APP_NAME=${cleanAppName}`);
-EOF
+        // Output the values
+        console.log(`CURRENT_VERSION=${currentVersion}`);
+        console.log(`APP_NAME=${appName}`);
+        console.log(`APP_ID=${appId}`);
+        console.log(`CLEAN_APP_NAME=${cleanAppName}`);
+        EOF
 
         # Run the Node.js script and capture output
         node read-config.js > config-output.txt
