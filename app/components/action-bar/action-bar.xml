@@ -19,6 +19,7 @@
             col="1"
             text="{{title}}"
             textTransform="none"
+            ontap="{{goToAbout}}"
             class="text-center text-white text-xl" />
         <ContentView
             col="2"

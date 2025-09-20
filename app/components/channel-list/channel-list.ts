@@ -29,7 +29,8 @@ function onChannelItemTap(
     case "tap":
       getTopFrame(page).navigate({
         moduleName: 'screens/video-page/video-page',
-        context: { source: channel.url }
+        context: { source: channel.url },
+        animated: true
       });
       break;
     case "longPress":

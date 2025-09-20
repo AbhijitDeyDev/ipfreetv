@@ -20,7 +20,8 @@ export function navigatingTo(args: EventData) {
       return () => {
         getTopFrame(page).navigate({
           moduleName: 'screens/channel-by-category-page/channel-by-category-page',
-          context: { category }
+          context: { category },
+          animated: true
         });
       };
     },

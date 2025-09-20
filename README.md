@@ -1,6 +1,8 @@
+![Header](app/assets/images/header.png)
+
 # IPFreeTV
 
-IP TV app built using NativeScript for Android (working) and iOS (not tested).
+IP TV app with over 300+ Indian TV channels, built using NativeScript for Android (working) and iOS (not tested).
 
 ## Features
 
@@ -11,7 +13,7 @@ IP TV app built using NativeScript for Android (working) and iOS (not tested).
 ## Screenshots
 | Categories | Favorites | All Channels | Landscape | Portrait |
 | :----: | :----: | :----: | :----: | :----: |
-| ![screen shot 1](screenshots/Screenshot_1758361383.png) | ![screen shot 2](screenshots/Screenshot_1758361397.png) | ![screen shot 3](screenshots/Screenshot_1758364751.png) | ![screen shot 4](screenshots/Screenshot_1758361370.png) | ![screen shot 5](screenshots/Screenshot_1758361424.png) |
+| <img src="screenshots/Screenshot_1758361383.png" alt="screen shot 1" height="300" width="auto" /> | <img src="screenshots/Screenshot_1758361397.png" alt="screen shot 2" height="300" width="auto" /> | <img src="screenshots/Screenshot_1758364751.png" alt="screen shot 3" height="300" width="auto" /> | <img src="screenshots/Screenshot_1758361370.png" alt="screen shot 4" height="300" width="auto" /> | <img src="screenshots/Screenshot_1758361424.png" alt="screen shot 5" height="300" width="auto" /> |
 
 
 ## Technologies Used

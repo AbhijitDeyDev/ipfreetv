@@ -1,4 +1,5 @@
 import { Application, EventData, fromObject, SearchBar, StackLayout } from "@nativescript/core";
+import { getTopFrame } from "../../common/helpers";
 
 interface PropsType extends StackLayout {
   title?: string;
@@ -13,6 +14,7 @@ export function onLoaded(args: EventData) {
     title: stackLayout.title,
     goBack: () => stackLayout.page.frame.goBack(),
     toggleSearchMode,
+    goToAbout,
     hideBackBtn: stackLayout.hideBackBtn,
     showSearch: stackLayout.showSearch,
     searchMode: false,
@@ -32,6 +34,13 @@ export function onLoaded(args: EventData) {
     stackLayout.searchInputChange?.('');
     searchBar.text = '';
     viewModel.set('searchMode', !viewModel.get('searchMode'));
+  }
+
+  function goToAbout() {
+    getTopFrame(stackLayout.page).navigate({
+      moduleName: 'screens/about-page/about-page',
+      animated: true
+    });
   }
 
   if (__ANDROID__)
