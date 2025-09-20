@@ -74,7 +74,7 @@ jobs:
 
     - name: Install NativeScript CLI
       run: |
-        npm install -g @nativescript/cli
+        npm install -g nativescript
         ns doctor android
 
     - name: Install dependencies
