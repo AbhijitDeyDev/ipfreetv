@@ -75,20 +75,109 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Read current package.json
+    - name: Read current package.json and nativescript.config.ts
       id: package-info
       run: |
-        CURRENT_VERSION=$(node -p "require('./package.json').version")
-        APP_NAME=$(node -p "require('./package.json').name || 'nativescript-app'")
-        APP_ID=$(node -p "require('./package.json').nativescript?.id || 'com.example.app'")
+        # Create a Node.js script to read the config
+        cat > read-config.js << 'EOF'
+const fs = require('fs');
+const path = require('path');
 
+// Read package.json version
+const packageJson = require('./package.json');
+const currentVersion = packageJson.version;
+
+let appName = packageJson.name || 'IPFreeTV';
+let appId = 'com.abhijit.ipfreetv';
+
+// Try to read nativescript.config.ts
+const configPath = './nativescript.config.ts';
+if (fs.existsSync(configPath)) {
+  try {
+    const configContent = fs.readFileSync(configPath, 'utf8');
+
+    // Extract app ID using regex - handle various formats
+    const idMatches = [
+      /id:\s*['"`]([^'"`]*?)['"`]/,
+      /"id":\s*['"`]([^'"`]*?)['"`]/,
+      /'id':\s*['"`]([^'"`]*?)['"`]/
+    ];
+
+    for (const regex of idMatches) {
+      const match = configContent.match(regex);
+      if (match) {
+        appId = match[1];
+        break;
+      }
+    }
+
+    // Try to extract app display name - handle various formats
+    const nameMatches = [
+      /projectName:\s*['"`]([^'"`]*?)['"`]/,
+      /"projectName":\s*['"`]([^'"`]*?)['"`]/,
+      /'projectName':\s*['"`]([^'"`]*?)['"`]/
+    ];
+
+    for (const regex of nameMatches) {
+      const match = configContent.match(regex);
+      if (match) {
+        appName = match[1];
+        break;
+      }
+    }
+
+    console.log('✅ Successfully parsed nativescript.config.ts');
+    console.log(`📖 Found app ID: ${appId}`);
+    console.log(`📖 Found app name: ${appName}`);
+  } catch (error) {
+    console.log('⚠️ Error parsing nativescript.config.ts:', error.message);
+  }
+} else {
+  console.log('❌ nativescript.config.ts not found, using package.json values');
+}
+
+// Clean app name for filename usage
+const cleanAppName = appName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+
+// Output the values
+console.log(`CURRENT_VERSION=${currentVersion}`);
+console.log(`APP_NAME=${appName}`);
+console.log(`APP_ID=${appId}`);
+console.log(`CLEAN_APP_NAME=${cleanAppName}`);
+EOF
+
+        # Run the Node.js script and capture output
+        node read-config.js > config-output.txt
+
+        # Extract values from output
+        CURRENT_VERSION=$(grep "CURRENT_VERSION=" config-output.txt | cut -d'=' -f2)
+        APP_NAME=$(grep "APP_NAME=" config-output.txt | cut -d'=' -f2)
+        APP_ID=$(grep "APP_ID=" config-output.txt | cut -d'=' -f2)
+        CLEAN_APP_NAME=$(grep "CLEAN_APP_NAME=" config-output.txt | cut -d'=' -f2)
+
+        # Set GitHub Actions outputs
         echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
         echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
         echo "app_id=$APP_ID" >> $GITHUB_OUTPUT
+        echo "clean_app_name=$CLEAN_APP_NAME" >> $GITHUB_OUTPUT
 
         echo "📱 App: $APP_NAME"
-        echo "🔢 Current Version: $CURRENT_VERSION" 
+        echo "🔢 Current Version: $CURRENT_VERSION"
         echo "🆔 App ID: $APP_ID"
+
+        # Show what was parsed
+        echo "🔍 Parsing results:"
+        cat config-output.txt
+
+        # Show config file preview
+        if [ -f "nativescript.config.ts" ]; then
+          echo ""
+          echo "🔍 Config file preview (first 15 lines):"
+          head -15 nativescript.config.ts
+        fi
+
+        # Cleanup
+        rm read-config.js config-output.txt
 
     - name: Calculate new version
       id: new-version
@@ -165,16 +254,12 @@ jobs:
         echo "date=$(date +'%Y-%m-%d_%H-%M')" >> $GITHUB_OUTPUT
         echo "timestamp=$(date +'%s')" >> $GITHUB_OUTPUT
 
-        APP_NAME="${{ steps.package-info.outputs.app_name }}"
-        # Clean app name for filename use
-        CLEAN_NAME=$(echo "$APP_NAME" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
-        echo "clean_app_name=$CLEAN_NAME" >> $GITHUB_OUTPUT
-
     - name: Build Android Debug APK
       if: github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == 'both'
       run: |
         echo "🔨 Building debug APK with optimizations..."
         echo "Version: ${{ steps.build-version.outputs.version }}"
+        echo "App: ${{ steps.package-info.outputs.app_name }}"
 
         ns build android --release=false --copy-to . --env.snapshot --env.compileSnapshot --env.uglify
 
@@ -192,6 +277,7 @@ jobs:
       run: |
         echo "🔨 Building release APK with optimizations..."
         echo "Version: ${{ steps.build-version.outputs.version }}"
+        echo "App: ${{ steps.package-info.outputs.app_name }}"
 
         ns build android --release --copy-to . --env.snapshot --env.compileSnapshot --env.uglify
 
@@ -209,20 +295,20 @@ jobs:
         mkdir -p build-output
 
         VERSION="${{ steps.build-version.outputs.version }}"
-        APP_NAME="${{ steps.build-info.outputs.clean_app_name }}"
+        CLEAN_APP_NAME="${{ steps.package-info.outputs.clean_app_name }}"
         TIMESTAMP="${{ steps.build-info.outputs.timestamp }}"
 
         # Process debug APK
         if [ -f "app-debug.apk" ]; then
-          NEW_NAME="${APP_NAME}-debug-v${VERSION}-${TIMESTAMP}.apk"
+          NEW_NAME="${CLEAN_APP_NAME}-debug-v${VERSION}-${TIMESTAMP}.apk"
           mv app-debug.apk "build-output/$NEW_NAME"
           echo "✅ Debug APK: $NEW_NAME"
           echo "debug_apk_name=$NEW_NAME" >> $GITHUB_ENV
         fi
 
-        # Process release APK  
+        # Process release APK
         if [ -f "app-release.apk" ]; then
-          NEW_NAME="${APP_NAME}-release-v${VERSION}-${TIMESTAMP}.apk"
+          NEW_NAME="${CLEAN_APP_NAME}-release-v${VERSION}-${TIMESTAMP}.apk"
           mv app-release.apk "build-output/$NEW_NAME"
           echo "✅ Release APK: $NEW_NAME"
           echo "release_apk_name=$NEW_NAME" >> $GITHUB_ENV
@@ -243,6 +329,7 @@ jobs:
       if: github.event.inputs.update_package_json == 'true' && steps.new-version.outputs.version_changed == 'true'
       run: |
         VERSION="${{ steps.build-version.outputs.version }}"
+        APP_NAME="${{ steps.package-info.outputs.app_name }}"
 
         # Add changed files
         git add package.json
@@ -251,11 +338,12 @@ jobs:
         fi
 
         # Commit the version bump
-        git commit -m "🔖 Bump version to v$VERSION
+        git commit -m "🔖 Bump $APP_NAME to v$VERSION
 
         - Updated package.json version
         - Build triggered via GitHub Actions
         - Generated optimized APK files
+        - App ID: ${{ steps.package-info.outputs.app_id }}
 
         [skip ci]"
 
@@ -265,15 +353,19 @@ jobs:
       if: github.event.inputs.update_package_json == 'true' && steps.new-version.outputs.version_changed == 'true'
       run: |
         TAG="${{ steps.build-version.outputs.tag }}"
+        APP_NAME="${{ steps.package-info.outputs.app_name }}"
+        APP_ID="${{ steps.package-info.outputs.app_id }}"
 
         # Create annotated tag
-        git tag -a "$TAG" -m "Release $TAG
+        git tag -a "$TAG" -m "Release $TAG - $APP_NAME
 
         🚀 NativeScript Android Release
-        📱 App: ${{ steps.package-info.outputs.app_name }}
+        📱 App: $APP_NAME
+        🆔 App ID: $APP_ID
         🔢 Version: ${{ steps.build-version.outputs.version }}
         📅 Date: $(date +'%Y-%m-%d %H:%M UTC')
-        🏗️ Build: Optimized with snapshots and uglification"
+        🏗️ Build: Optimized with snapshots and uglification
+        ⚙️ Config: Read from nativescript.config.ts"
 
         # Push commits and tags
         git push origin HEAD:${{ github.ref_name }}
@@ -302,6 +394,7 @@ jobs:
       run: |
         VERSION="${{ steps.build-version.outputs.version }}"
         APP_NAME="${{ steps.package-info.outputs.app_name }}"
+        APP_ID="${{ steps.package-info.outputs.app_id }}"
 
         cat > release_notes.md << EOF
         # 🚀 $APP_NAME v$VERSION
@@ -309,14 +402,15 @@ jobs:
         ## 📱 Application Details
         - **App Name**: $APP_NAME
         - **Version**: $VERSION
-        - **App ID**: ${{ steps.package-info.outputs.app_id }}
+        - **App ID**: $APP_ID
         - **Build Date**: $(date +'%Y-%m-%d %H:%M UTC')
         - **Platform**: Android
+        - **Config Source**: nativescript.config.ts
 
         ## ⚡ Performance Optimizations
         This release includes advanced NativeScript optimizations:
         - **📸 V8 Snapshots**: Enabled for 40-60% faster app startup
-        - **🗜️ Compiled Snapshots**: Pre-compiled for reduced bundle size  
+        - **🗜️ Compiled Snapshots**: Pre-compiled for reduced bundle size
         - **🔧 Code Uglification**: Minified JavaScript for smaller APK
         - **⚙️ Build Command**: \`ns build android --copy-to . --env.snapshot --env.compileSnapshot --env.uglify\`
 
@@ -324,6 +418,7 @@ jobs:
         - **Package.json Version**: $(node -p "require('./package.json').version")
         - **Version Bump Applied**: ${{ github.event.inputs.version_type }}
         - **Auto-updated**: ${{ github.event.inputs.update_package_json }}
+        - **Config Integration**: App name and ID read from nativescript.config.ts
 
         ## 📋 What's Included
         EOF
@@ -371,9 +466,10 @@ jobs:
         | Property | Value |
         |----------|--------|
         | **App Name** | ${{ steps.package-info.outputs.app_name }} |
-        | **Version** | ${{ steps.build-version.outputs.version }} |
         | **App ID** | ${{ steps.package-info.outputs.app_id }} |
+        | **Version** | ${{ steps.build-version.outputs.version }} |
         | **Build Date** | $(date +'%Y-%m-%d %H:%M UTC') |
+        | **Config Source** | nativescript.config.ts |
 
         ## ⚡ Optimizations Applied
         - ✅ **V8 Snapshots** - Faster app startup (40-60% improvement)
@@ -405,8 +501,13 @@ jobs:
         ## 📥 Download Instructions
         1. Go to the **Actions** tab
         2. Click on this workflow run
-        3. Scroll to **Artifacts** section  
+        3. Scroll to **Artifacts** section
         4. Download your APK files
+
+        ## 🔧 Configuration Integration
+        - **App name and ID** automatically read from \`nativescript.config.ts\`
+        - **Version management** handled through \`package.json\`
+        - **Build optimizations** applied with custom NativeScript command
 
         ## 📊 Performance Benefits
         - **40-60% faster startup** with V8 snapshots
