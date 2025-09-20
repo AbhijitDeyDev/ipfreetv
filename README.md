@@ -72,20 +72,6 @@ This app leverages publicly available IPTV playlists. For a large collection of 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Author
-
-Developer Name
-
-## Acknowledgments
-
-Thanks to the maintainers of the open source packages used in this project. Your work enabled this app:
-
-- [@nstudio/nativescript-exoplayer](https://github.com/NativeScript/nativescript-exoplayer)
-- [@nativescript/core](https://www.nativescript.org/)
-- [@nativescript-community/ui-material-ripple](https://github.com/nativescript-community/ui-material-ripple)
-- [@nativescript-community/ui-image](https://github.com/nativescript-community/ui-image)
-- [TailwindCSS](https://tailwindcss.com/)
-
 ---
 
 For issues, feature requests or contributions, please open a GitHub issue or pull request.

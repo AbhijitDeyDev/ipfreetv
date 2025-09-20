@@ -401,31 +401,6 @@ jobs:
         - **App ID**: $APP_ID
         - **Build Date**: $(date +'%Y-%m-%d %H:%M UTC')
         - **Platform**: Android
-        - **Config Source**: nativescript.config.ts
-
-        ## ⚡ Performance Optimizations
-        This release includes advanced NativeScript optimizations:
-        - **📸 V8 Snapshots**: Enabled for 40-60% faster app startup
-        - **🗜️ Compiled Snapshots**: Pre-compiled for reduced bundle size
-        - **🔧 Code Uglification**: Minified JavaScript for smaller APK
-        - **⚙️ Build Command**: \`ns build android --copy-to . --env.snapshot --env.compileSnapshot --env.uglify\`
-
-        ## 📦 Package Information
-        - **Package.json Version**: $(node -p "require('./package.json').version")
-        - **Version Bump Applied**: ${{ github.event.inputs.version_type }}
-        - **Auto-updated**: ${{ github.event.inputs.update_package_json }}
-        - **Config Integration**: App name and ID read from nativescript.config.ts
-
-        ## 📋 What's Included
-        EOF
-
-        if [ "${{ github.event.inputs.build_type }}" == "debug" ] || [ "${{ github.event.inputs.build_type }}" == "both" ]; then
-          echo "- 🐛 **Debug APK**: \`${debug_apk_name:-Debug APK}\` - For development and testing" >> release_notes.md
-        fi
-
-        if [ "${{ github.event.inputs.build_type }}" == "release" ] || [ "${{ github.event.inputs.build_type }}" == "both" ]; then
-          echo "- 🚀 **Release APK**: \`${release_apk_name:-Release APK}\` - Production-ready build" >> release_notes.md
-        fi
 
         cat >> release_notes.md << EOF
 
@@ -500,16 +475,6 @@ jobs:
         3. Scroll to **Artifacts** section
         4. Download your APK files
 
-        ## 🔧 Configuration Integration
-        - **App name and ID** automatically read from \`nativescript.config.ts\`
-        - **Version management** handled through \`package.json\`
-        - **Build optimizations** applied with custom NativeScript command
-
-        ## 📊 Performance Benefits
-        - **40-60% faster startup** with V8 snapshots
-        - **Smaller app size** with compiled snapshots
-        - **Optimized runtime** with uglified code
-        - **Production-ready** builds with full optimizations
         EOF
 
         if [ "${{ steps.new-version.outputs.version_changed }}" == "true" ]; then
