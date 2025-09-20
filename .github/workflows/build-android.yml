@@ -34,7 +34,7 @@ on:
         type: boolean
 
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 22
 
 jobs:
   build:
@@ -53,9 +53,9 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
     - name: Setup PNPM
-      uses: pnpm/action-setup@v2
+      uses: pnpm/action-setup@v4
       with:
-        version: 6.32.9
+        version: 10
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -75,7 +75,6 @@ jobs:
     - name: Install NativeScript CLI
       run: |
         npm install -g nativescript
-        ns doctor android
 
     - name: Install dependencies
       run: pnpm install
@@ -148,7 +147,7 @@ jobs:
         console.log(`CURRENT_VERSION=${currentVersion}`);
         console.log(`APP_NAME=${appName}`);
         console.log(`APP_ID=${appId}`);
-        console.log(`CLEAN_APP_NAME=${cleanAppName}`);
+        console.log(`CLEAN_NAME=${cleanAppName}`);
         EOF
 
         # Run the Node.js script and capture output
@@ -158,7 +157,7 @@ jobs:
         CURRENT_VERSION=$(grep "CURRENT_VERSION=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
         APP_NAME=$(grep "APP_NAME=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
         APP_ID=$(grep "APP_ID=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
-        CLEAN_APP_NAME=$(grep "CLEAN_APP_NAME=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
+        CLEAN_APP_NAME=$(grep "CLEAN_NAME=" config-output.txt | cut -d'=' -f2- | tr -d '\n\r' | xargs)
 
         # Set GitHub Actions outputs
         {
@@ -257,7 +256,7 @@ jobs:
         echo "Version: ${{ steps.build-version.outputs.version }}"
         echo "App: ${{ steps.package-info.outputs.app_name }}"
 
-        ns build android --release=false --copy-to . --env.snapshot --env.compileSnapshot --env.uglify
+        ns build android --copy-to . --env.snapshot --env.compileSnapshot --env.uglify
 
         # Verify APK creation
         if [ -f "app-debug.apk" ]; then
