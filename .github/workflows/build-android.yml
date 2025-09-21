@@ -231,13 +231,10 @@ jobs:
           echo "📱 Updating Android app.gradle..."
 
           # Update versionName
-          sed -i.tmp "s/versionName "[^"]*"/versionName "$NEW_VERSION"/g" "$ANDROID_GRADLE_PATH"
+          sed -i "s/versionName \"[^\"]*\"/versionName \"$NEW_VERSION\"/g" "$ANDROID_GRADLE_PATH"
 
           # Update versionCode
-          sed -i.tmp "s/versionCode [0-9]*/versionCode $VERSION_CODE/g" "$ANDROID_GRADLE_PATH"
-
-          # Remove temporary file
-          rm -f "$ANDROID_GRADLE_PATH.tmp"
+          sed -i "s/versionCode [0-9]*/versionCode $VERSION_CODE/g" "$ANDROID_GRADLE_PATH"
 
           echo "✅ Android app.gradle updated:"
           echo "  - versionName: "$NEW_VERSION""
