@@ -1,6 +1,8 @@
 import { alert, EventData, File, fromObject, Page } from "@nativescript/core";
 import { getApplicationContext } from "@nativescript/core/utils/android";
 import aboutHtml from "./about-html";
+import { getAppVersion } from "../../common/helpers";
+import { GITHUB_DETAILS } from "../../common/constant";
 
 export function navigatingTo(args: EventData) {
   const page = <Page> args.object;
@@ -13,6 +15,8 @@ export function navigatingTo(args: EventData) {
     let aboutFileText = aboutHtml;
     const appVersion = getAppVersion();
     aboutFileText = aboutFileText.replace('{VERSION}', appVersion);
+    aboutFileText = aboutFileText.replaceAll('{GITHUB_USERNAME}', GITHUB_DETAILS.UserName);
+    aboutFileText = aboutFileText.replaceAll('{GITHUB_APP_NAME}', GITHUB_DETAILS.AppName);
     viewModel.set('aboutHtml', aboutFileText);
   } catch {
     alert("Unable to show info about app");
@@ -20,16 +24,4 @@ export function navigatingTo(args: EventData) {
 
 
   page.bindingContext = viewModel;
-}
-
-function getAppVersion() {
-  if (__ANDROID__) {
-    const packageManager = android.content.pm.PackageManager;
-    const packageInfo = getApplicationContext()
-      .getPackageManager()
-      .getPackageInfo(getApplicationContext().getPackageName(), packageManager.GET_META_DATA);
-    return packageInfo.versionName;
-  } else if (__IOS__) {
-    return String(NSBundle.mainBundle.objectForInfoDictionaryKey('CFBundleVersion'));
-  }
 }

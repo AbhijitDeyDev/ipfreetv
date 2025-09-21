@@ -13,15 +13,6 @@ on:
         - minor
         - major
         - none
-      build_type:
-        description: 'Build type'
-        required: true
-        default: 'both'
-        type: choice
-        options:
-        - debug
-        - release
-        - both
       create_release:
         description: 'Create GitHub release'
         required: true
@@ -209,7 +200,7 @@ jobs:
           echo "📌 Version unchanged: $CURRENT_VERSION"
         fi
 
-    - name: Update package.json version
+    - name: Update package.json and Android app.gradle versions
       if: github.event.inputs.update_package_json == 'true' && steps.new-version.outputs.version_changed == 'true'
       run: |
         NEW_VERSION="${{ steps.new-version.outputs.new_version }}"
@@ -227,6 +218,68 @@ jobs:
           echo "📝 Updating package-lock.json version"
           npm version $NEW_VERSION --no-git-tag-version --allow-same-version
         fi
+
+        # Calculate version code for Android (convert semantic version to integer)
+        # Format: major*10000 + minor*100 + patch (e.g., 1.2.3 -> 10203)
+        IFS='.' read -r major minor patch <<< "$NEW_VERSION"
+        VERSION_CODE=$((major * 10000 + minor * 100 + patch))
+        echo "📱 Calculated Android version code: $VERSION_CODE"
+
+        # Update Android app.gradle if it exists
+        ANDROID_GRADLE_PATH="./App_Resources/Android/app.gradle"
+        if [ -f "$ANDROID_GRADLE_PATH" ]; then
+          echo "📱 Updating Android app.gradle..."
+
+          # Update versionName
+          sed -i.tmp "s/versionName "[^"]*"/versionName "$NEW_VERSION"/g" "$ANDROID_GRADLE_PATH"
+
+          # Update versionCode
+          sed -i.tmp "s/versionCode [0-9]*/versionCode $VERSION_CODE/g" "$ANDROID_GRADLE_PATH"
+
+          # Remove temporary file
+          rm -f "$ANDROID_GRADLE_PATH.tmp"
+
+          echo "✅ Android app.gradle updated:"
+          echo "  - versionName: "$NEW_VERSION""
+          echo "  - versionCode: $VERSION_CODE"
+
+          # Show the updated section for verification
+          echo "🔍 Updated Android gradle section:"
+          grep -A 5 -B 5 "versionCode\|versionName" "$ANDROID_GRADLE_PATH" || echo "Version lines not found in expected format"
+
+          # Verify the updates were successful
+          GRADLE_VERSION_NAME=$(grep 'versionName' "$ANDROID_GRADLE_PATH" | sed 's/.*versionName "\([^"]*\)".*/\1/')
+          GRADLE_VERSION_CODE=$(grep 'versionCode' "$ANDROID_GRADLE_PATH" | sed 's/.*versionCode \([0-9]*\).*/\1/')
+
+          echo "🔍 Verification:"
+          if [ "$GRADLE_VERSION_NAME" = "$NEW_VERSION" ]; then
+            echo "✅ Android versionName: $GRADLE_VERSION_NAME"
+          else
+            echo "❌ Android versionName: Expected $NEW_VERSION, got $GRADLE_VERSION_NAME"
+          fi
+
+          if [ "$GRADLE_VERSION_CODE" = "$VERSION_CODE" ]; then
+            echo "✅ Android versionCode: $GRADLE_VERSION_CODE"
+          else
+            echo "❌ Android versionCode: Expected $VERSION_CODE, got $GRADLE_VERSION_CODE"
+          fi
+        else
+          echo "⚠️ Android app.gradle not found at $ANDROID_GRADLE_PATH"
+        fi
+
+        # Create a summary of all updated files
+        echo ""
+        echo "📋 Version Update Summary:"
+        echo "├── package.json: $NEW_VERSION"
+        if [ -f "package-lock.json" ]; then
+          echo "├── package-lock.json: $NEW_VERSION"
+        fi
+        if [ -f "$ANDROID_GRADLE_PATH" ]; then
+          echo "└── Android app.gradle: versionName "$NEW_VERSION", versionCode $VERSION_CODE"
+        fi
+        echo ""
+
+        echo "✅ All version updates completed successfully!"
 
     - name: Set final version for build
       id: build-version
@@ -247,37 +300,18 @@ jobs:
         echo "date=$(date +'%Y-%m-%d_%H-%M')" >> $GITHUB_OUTPUT
         echo "timestamp=$(date +'%s')" >> $GITHUB_OUTPUT
 
-    - name: Build Android Debug APK
-      if: github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == 'both'
-      run: |
-        echo "🔨 Building debug APK with optimizations..."
-        echo "Version: ${{ steps.build-version.outputs.version }}"
-        echo "App: ${{ steps.package-info.outputs.app_name }}"
-
-        ns build android --copy-to . --env.snapshot --env.compileSnapshot --env.uglify
-
-        # Verify APK creation
-        if [ -f "app-debug.apk" ]; then
-          echo "✅ Debug APK created successfully"
-          ls -lh app-debug.apk
-        else
-          echo "❌ Debug APK not found, checking alternatives..."
-          find . -maxdepth 1 -name "*debug*.apk" -type f
-        fi
-
     - name: Build Android Release APK
-      if: github.event.inputs.build_type == 'release' || github.event.inputs.build_type == 'both'
       run: |
         echo "🔨 Building release APK with optimizations..."
         echo "Version: ${{ steps.build-version.outputs.version }}"
         echo "App: ${{ steps.package-info.outputs.app_name }}"
 
-        ns build android --release --copy-to . --env.snapshot --env.compileSnapshot --env.uglify
+        ns build android --release --copy-to . --env.snapshot --env.compileSnapshot --env.uglify --key-store-path ./AndroidKey.jks --key-store-alias AndroidKey --key-store-password AndroidPass --key-store-alias-password AndroidPass
 
         # Verify APK creation
-        if [ -f "app-release.apk" ]; then
+        if [ -f "app-universal-release.apk" ]; then
           echo "✅ Release APK created successfully"
-          ls -lh app-release.apk
+          ls -lh app-universal-release.apk
         else
           echo "❌ Release APK not found, checking alternatives..."
           find . -maxdepth 1 -name "*release*.apk" -type f
@@ -291,18 +325,10 @@ jobs:
         CLEAN_APP_NAME="${{ steps.package-info.outputs.clean_app_name }}"
         TIMESTAMP="${{ steps.build-info.outputs.timestamp }}"
 
-        # Process debug APK
-        if [ -f "app-debug.apk" ]; then
-          NEW_NAME="${CLEAN_APP_NAME}-debug-v${VERSION}-${TIMESTAMP}.apk"
-          mv app-debug.apk "build-output/$NEW_NAME"
-          echo "✅ Debug APK: $NEW_NAME"
-          echo "debug_apk_name=$NEW_NAME" >> $GITHUB_ENV
-        fi
-
         # Process release APK
-        if [ -f "app-release.apk" ]; then
+        if [ -f "app-universal-release.apk" ]; then
           NEW_NAME="${CLEAN_APP_NAME}-release-v${VERSION}-${TIMESTAMP}.apk"
-          mv app-release.apk "build-output/$NEW_NAME"
+          mv app-universal-release.apk "build-output/$NEW_NAME"
           echo "✅ Release APK: $NEW_NAME"
           echo "release_apk_name=$NEW_NAME" >> $GITHUB_ENV
         fi

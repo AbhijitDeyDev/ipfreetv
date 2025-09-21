@@ -5,9 +5,9 @@ export default `
   <p>IPFreeTV is an IP TV app with over 300+ Indian TV channels, built using NativeScript.</p>
   <div class="section">
     <p><span class="highlight">Version:</span> {VERSION}</p>
-    <p><span class="highlight">License:</span> <a href="https://github.com/AbhijitDeyDev/ipfreetv/blob/master/LICENSE">MIT</a></p>
-    <p><span class="highlight">Developer:</span> <a href="https://github.com/AbhijitDeyDev">Abhijit Dey</a></p>
-    <p><span class="highlight">Source Code:</span> <a href="https://github.com/AbhijitDeyDev/ipfreetv">https://github.com/AbhijitDeyDev/ipfreetv</a></p>
+    <p><span class="highlight">License:</span> <a href="https://github.com/{GITHUB_USERNAME}/{GITHUB_APP_NAME}/blob/master/LICENSE">MIT</a></p>
+    <p><span class="highlight">Developer:</span> <a href="https://github.com/{GITHUB_USERNAME}">Abhijit Dey</a></p>
+    <p><span class="highlight">Source Code:</span> <a href="https://github.com/{GITHUB_USERNAME}/{GITHUB_APP_NAME}">https://github.com/{GITHUB_USERNAME}/{GITHUB_APP_NAME}</a></p>
   </div>
 
   <div class="section">
