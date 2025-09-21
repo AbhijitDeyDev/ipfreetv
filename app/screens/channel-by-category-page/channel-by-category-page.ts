@@ -29,5 +29,8 @@ export function navigatingTo(args: NavigatedData) {
 }
 
 function getChannelsByCategory(category: string) {
-  return IndianChannels.filter(channel => channel['group-title'].includes(category));
+  return IndianChannels.filter(channel =>
+    (category === 'Others' && !channel['group-title'].trim().length) ||
+    channel['group-title'].includes(category)
+  );
 }
