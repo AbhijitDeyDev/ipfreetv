@@ -24,6 +24,7 @@ export default `
   <div class="section">
     <h2>Related Projects</h2>
     <p>For a comprehensive collection of publicly available IPTV channels, visit the <a href="https://github.com/iptv-org/iptv" target="_blank" rel="noopener noreferrer">iptv-org/iptv</a> repository on GitHub.</p>
+    <p>Icons by <a href="https://www.iconsdb.com/">iconsDB.com</a></p>
   </div>
 
   <div class="section">

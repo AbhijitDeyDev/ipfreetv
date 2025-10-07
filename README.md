@@ -68,6 +68,8 @@ ns run ios
 
 This app leverages publicly available IPTV playlists. For a large collection of IPTV channels worldwide, check out the [iptv-org/iptv](https://github.com/iptv-org/iptv) repository on GitHub.
 
+Icons by [iconsDB.com](https://www.iconsdb.com/).
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
