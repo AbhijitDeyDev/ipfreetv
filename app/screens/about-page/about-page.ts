@@ -1,5 +1,4 @@
 import { alert, EventData, File, fromObject, Page } from "@nativescript/core";
-import { getApplicationContext } from "@nativescript/core/utils/android";
 import aboutHtml from "./about-html";
 import { getAppVersion } from "../../common/helpers";
 import { GITHUB_DETAILS } from "../../common/constant";

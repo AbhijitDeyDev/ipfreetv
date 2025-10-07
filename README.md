@@ -13,7 +13,7 @@ IP TV app with over 300+ Indian TV channels, built using NativeScript for Androi
 ## Screenshots
 | Categories | Favorites | All Channels | Landscape | Portrait |
 | :----: | :----: | :----: | :----: | :----: |
-| <img src="screenshots/Screenshot_1758361383.png" alt="screen shot 1" height="300" width="auto" /> | <img src="screenshots/Screenshot_1758361397.png" alt="screen shot 2" height="300" width="auto" /> | <img src="screenshots/Screenshot_1758364751.png" alt="screen shot 3" height="300" width="auto" /> | <img src="screenshots/Screenshot_1758361370.png" alt="screen shot 4" height="300" width="auto" /> | <img src="screenshots/Screenshot_1758361424.png" alt="screen shot 5" height="300" width="auto" /> |
+| <img src="metadata/en-US/images/phoneScreenshots/1.png" alt="screen shot 1" height="300" width="auto" /> | <img src="metadata/en-US/images/phoneScreenshots/2.png" alt="screen shot 2" height="300" width="auto" /> | <img src="metadata/en-US/images/phoneScreenshots/3.png" alt="screen shot 3" height="300" width="auto" /> | <img src="metadata/en-US/images/phoneScreenshots/4.png" alt="screen shot 4" height="300" width="auto" /> | <img src="metadata/en-US/images/phoneScreenshots/5.png" alt="screen shot 5" height="300" width="auto" /> |
 
 
 ## Technologies Used

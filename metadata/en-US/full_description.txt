@@ -1,0 +1,14 @@
+<strong>IP TV app with over 300+ Indian TV channels, built using NativeScript.</strong>
+<br/>
+<strong>Features</strong>
+<ul>
+    <li>
+      Stream IPTV channels with in multiple categories (News, Music, Sports, etc).
+    </li>
+    <li>
+      Fullscreen TV experience.
+    </li>
+    <li>
+      Add channels to favorite.
+    </li>
+</ul>
