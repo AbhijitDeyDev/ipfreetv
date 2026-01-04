@@ -1,5 +1,4 @@
-import { Frame, Page } from "@nativescript/core";
-import { getApplicationContext } from "@nativescript/core/utils/android";
+import { Page, Utils } from "@nativescript/core";
 
 export function getTopFrame(page: Page) {
   if (page.frame.page)
@@ -10,9 +9,13 @@ export function getTopFrame(page: Page) {
 export function getAppVersion() {
   if (__ANDROID__) {
     const packageManager = android.content.pm.PackageManager;
-    const packageInfo = getApplicationContext()
+    const packageInfo = Utils.android
+      .getApplicationContext()
       .getPackageManager()
-      .getPackageInfo(getApplicationContext().getPackageName(), packageManager.GET_META_DATA);
+      .getPackageInfo(
+        Utils.android.getApplicationContext().getPackageName(),
+        packageManager.GET_META_DATA
+      );
     return packageInfo.versionName;
   } else if (__IOS__) {
     return String(NSBundle.mainBundle.objectForInfoDictionaryKey('CFBundleVersion'));

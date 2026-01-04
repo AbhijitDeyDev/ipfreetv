@@ -1,5 +1,4 @@
-import { EventData, fromObject, ItemEventData, ListView, Page } from '@nativescript/core';
-import { getCurrentActivity } from '@nativescript/core/utils/android';
+import { EventData, fromObject, Page, Utils } from '@nativescript/core';
 import IndianChannels from "~/assets/json/IndianChannels.json";
 import { getTopFrame } from '../../common/helpers';
 
@@ -10,7 +9,8 @@ export function navigatingTo(args: EventData) {
   const categories = getChannelCategories();
 
   if (__ANDROID__) {
-    getCurrentActivity()
+    Utils.android
+      .getCurrentActivity()
       .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
   }
 

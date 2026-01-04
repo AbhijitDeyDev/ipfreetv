@@ -1,6 +1,5 @@
-import { Application, fromObject, NavigatedData, Page, Screen, TapGestureEventData } from "@nativescript/core";
+import { Application, fromObject, NavigatedData, Page, Screen, TapGestureEventData, Utils } from "@nativescript/core";
 import { Video } from "@nstudio/nativescript-exoplayer";
-import { getCurrentActivity } from "@nativescript/core/utils/android";
 
 export function onNavigatingTo(args: NavigatedData) {
   const context = args.context as { source: string; }
@@ -16,28 +15,29 @@ export function onNavigatingTo(args: NavigatedData) {
   });
 
   if (__ANDROID__) {
+    const currentActivity = Utils.android.getCurrentActivity();
 
-    getCurrentActivity()
+    currentActivity
       .getWindow()
       .addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-    getCurrentActivity()
+    currentActivity
       .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
     Application.android.on("activityBackPressed", () => {
       videoPlayer?.destroy();
 
       if (viewModel.get('isFullscreen')) {
-        getCurrentActivity()
+        currentActivity
           .getWindow()
           .getInsetsController()
           .show(android.view.WindowInsetsController.BEHAVIOR_DEFAULT);
 
-        getCurrentActivity()
+        currentActivity
           .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
       }
 
-      getCurrentActivity()
+      currentActivity
         .getWindow()
         .clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
       Application.android.off("activityBackPressed");
@@ -49,21 +49,22 @@ export function onNavigatingTo(args: NavigatedData) {
     viewModel.set('isFullscreen', newFullscreenState);
 
     if (__ANDROID__) {
+      const currentActivity = Utils.android.getCurrentActivity();
       if (newFullscreenState) {
-        getCurrentActivity()
+        currentActivity
           .getWindow()
           .getInsetsController()
           .hide(android.view.WindowInsetsController.BEHAVIOR_DEFAULT);
 
-        getCurrentActivity()
+        currentActivity
           .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
       } else {
-        getCurrentActivity()
+        currentActivity
           .getWindow()
           .getInsetsController()
           .show(android.view.WindowInsetsController.BEHAVIOR_DEFAULT);
 
-        getCurrentActivity()
+        currentActivity
           .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
       }
     }
