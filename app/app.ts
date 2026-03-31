@@ -10,7 +10,7 @@ import { Application } from '@nativescript/core'
 
 initialize({ isDownsampleEnabled: true });
 
-Application.run({ moduleName: 'app-root' })
+Application.run({ moduleName: 'app-root' });
 
 /*
 Do not place any code after the application has been started as it will not

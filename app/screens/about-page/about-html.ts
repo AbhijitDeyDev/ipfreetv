@@ -15,6 +15,7 @@ export default `
     <ul>
       <li>@nstudio/nativescript-exoplayer</li>
       <li>@nativescript/core</li>
+      <li>@nativescript-community/ui-collectionview</li>
       <li>@nativescript-community/ui-material-ripple</li>
       <li>@nativescript-community/ui-image</li>
       <li>tailwindcss</li>

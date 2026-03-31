@@ -22,6 +22,7 @@ IP TV app with over 300+ Indian TV channels, built using NativeScript for Androi
 - NativeScript ExoPlayer (`@nstudio/nativescript-exoplayer`)
 - NativeScript Community UI Material Ripple (`@nativescript-community/ui-material-ripple`)
 - NativeScript Community UI Image (`@nativescript-community/ui-image`)
+- NativeScript Community UI Collection View (`@nativescript-community/ui-collectionview`)
 - TailwindCSS for styling
 
 ## Installation
@@ -77,4 +78,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 For issues, feature requests or contributions, please open a GitHub issue or pull request.
-

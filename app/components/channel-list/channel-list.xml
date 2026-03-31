@@ -1,41 +1,48 @@
-<ListView
+<StackLayout
     xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:cv="@nativescript-community/ui-collectionview"
     xmlns:ui="@nativescript-community/ui-image"
     xmlns:mdr="@nativescript-community/ui-material-ripple"
-    items="{{ channels }}"
     loaded="onLoaded">
-    <ListView.itemTemplate>
-        <GridLayout
-            columns="*"
-            rows="*"
-            ontap="{{$parent.onItemEvent($value)}}"
-            onlongpress="{{$parent.onItemEvent($value)}}">
+    <cv:CollectionView
+        items="{{ channels }}"
+        colWidth="50%"
+        rowHeight="150"
+        padding="4">
+        <cv:CollectionView.itemTemplate>
             <GridLayout
-                col="0"
-                padding="16"
-                columns="50, *">
+                columns="*"
+                rows="*"
+                padding="4"
+                height="150"
+                ontap="{{$parent.onItemEvent($value)}}"
+                onlongpress="{{$parent.onItemEvent($value)}}">
                 <ui:Img
                     src="{{$value['tvg-logo']}}"
                     placeholderImageUri="~/assets/icons/hdtv.png"
                     failureImageUri="~/assets/icons/hdtv.png"
                     stretch="centerInside"
-                    width="50"
-                    height="50"
-                    automationText="{{name}}" />
+                    col="0"
+                    row="0"
+                    height="150" />
                 <StackLayout
-                    col="1"
-                    marginLeft="10">
+                    col="0"
+                    row="0"
+                    verticalAlignment="bottom"
+                    backgroundColor="rgba(0,0,0,0.5)">
                     <Label
                         text="{{ name }}"
-                        textWrap="true"
-                        textTransform="none"
-                        class="font-bolder text-[16px] text-[var(--secondary)]" />
+                        textTransform="uppercase"
+                        class="font-bolder text-[16px] text-white"
+                        margin="10 10 0 10" />
                     <Label
                         text="{{ $value['group-title'].split(';').join(', ') }}"
-                        textWrap="true" />
+                        textWrap="true"
+                        class="text-white"
+                        margin="0 10 10 10" />
                 </StackLayout>
+                <mdr:Ripple rippleColor="#08CB00" />
             </GridLayout>
-            <mdr:Ripple rippleColor="#08CB00" />
-        </GridLayout>
-    </ListView.itemTemplate>
-</ListView>
+        </cv:CollectionView.itemTemplate>
+    </cv:CollectionView>
+</StackLayout>

@@ -1,19 +1,19 @@
-import { Dialogs, EventData, fromObject, ListView, ObservableArray, Page } from "@nativescript/core";
+import { Dialogs, EventData, fromObject, ObservableArray, Page, StackLayout } from "@nativescript/core";
 import IndianChannels from "~/assets/json/IndianChannels.json";
 import { getTopFrame } from "../../common/helpers";
 import favoriteChannelStore from "../../common/store/favorite-channels";
 
-interface PropsType extends ListView {
+interface PropsType extends StackLayout {
   channels: ObservableArray<typeof IndianChannels[0]>;
 }
 
 export function onLoaded(args: EventData) {
-  const listView = (args.object as PropsType);
-  listView.bindingContext = fromObject({
-    channels: listView.channels,
+  const stackLayout = (args.object as PropsType);
+  stackLayout.bindingContext = fromObject({
+    channels: stackLayout.channels,
     onItemEvent: (channel: typeof IndianChannels[0]) => {
       return ({ eventName }: EventData) => {
-        onChannelItemTap(channel, eventName, listView.page);
+        onChannelItemTap(channel, eventName, stackLayout.page);
       };
     }
   });
