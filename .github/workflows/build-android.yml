@@ -308,7 +308,7 @@ jobs:
         # Verify APK creation
         if [ -f "app-arm64-v8a-release.apk" ]; then
           echo "✅ Release APK created successfully"
-          ls -lh app-universal-release.apk
+          ls -lh app-arm64-v8a-release.apk
         else
           echo "❌ Release APK not found, checking alternatives..."
           find . -maxdepth 1 -name "*release*.apk" -type f
@@ -323,9 +323,9 @@ jobs:
         TIMESTAMP="${{ steps.build-info.outputs.timestamp }}"
 
         # Process release APK
-        if [ -f "app-universal-release.apk" ]; then
+        if [ -f "app-arm64-v8a-release.apk" ]; then
           NEW_NAME="${CLEAN_APP_NAME}-release-v${VERSION}-${TIMESTAMP}.apk"
-          mv app-universal-release.apk "build-output/$NEW_NAME"
+          mv app-arm64-v8a-release.apk "build-output/$NEW_NAME"
           echo "✅ Release APK: $NEW_NAME"
           echo "release_apk_name=$NEW_NAME" >> $GITHUB_ENV
         fi
