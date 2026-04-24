@@ -1,0 +1,48 @@
+# IPFreeTV - AI Context File
+
+## PROJECT OVERVIEW
+NativeScript Android IPTV app with 300+ Indian TV channels. Built with NativeScript Core 9.x, ExoPlayer for video, TailwindCSS for styling. Tab navigation: Categories, Favorites, All Channels.
+
+## STRUCTURE
+```
+app/
+├── assets/json/IndianChannels.json      # 822 channels [{id, tvg-logo, group-title, name, url}]
+├── common/                              # constants.ts, helpers.ts, store/
+├── components/                          # action-bar/, channel-list/
+├── screens/                             # 7 pages including video-page with ExoPlayer
+app.ts                                   # Entry point
+app.css                                  # Tailwind + CSS vars (--primary: #08CB00)
+```
+
+## KEY PATTERNS
+- **Navigation**: TabView → Frames → Pages with context passing
+- **Platform**: `__ANDROID__`/`__IOS__` macros, Android orientation control
+- **Data**: Categories from `group-title` split by ';', favorites in ApplicationSettings
+- **Video**: Fullscreen toggle hides system UI, landscape orientation
+- **UI**: Custom action bar with search, observable ViewModels with `fromObject`
+
+## IMPORTANT FILES
+1. `app/screens/main-page.xml` - Tab navigation (3 tabs)
+2. `app/screens/video-page/` - ExoPlayer integration with fullscreen
+3. `app/components/action-bar/` - Reusable header with search
+4. `app/common/helpers.ts` - getAppVersion(), compareSemver()
+5. `package.json` - Deps: @nativescript/core, @nstudio/nativescript-exoplayer
+
+## STYLING
+- Colors: primary(#08CB00), secondary(#253900), text(#000000), bg(#EEEEEE)
+- Fonts: Roboto regular/bold
+- Tailwind utility classes in XML
+
+## BUILD/RUN
+```bash
+npm install
+ns run android    # Android only (iOS untested)
+```
+
+## UPDATE THIS FILE WHEN:
+- Adding/removing screens or components
+- Changing dependencies in package.json
+- Modifying project structure
+- Adding new data patterns or utilities
+
+Last updated: Initial analysis complete

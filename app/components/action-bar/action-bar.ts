@@ -44,10 +44,9 @@ export function onLoaded(args: EventData) {
   }
 
   if (__ANDROID__)
-    Application.android.on('activityBackPressed', () => {
+    Application.android.once('activityBackPressed', () => {
       stackLayout.searchInputChange?.('');
       searchBar.text = '';
-      Application.android.off('activityBackPressed');
     });
 
   stackLayout.bindingContext = viewModel;

@@ -24,23 +24,26 @@ export function onNavigatingTo(args: NavigatedData) {
     currentActivity
       .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-    Application.android.on("activityBackPressed", () => {
-      videoPlayer?.destroy();
+    Application.android.once("activityBackPressed", () => {
+      try {
+        videoPlayer?.destroy();
 
-      if (viewModel.get('isFullscreen')) {
+        if (viewModel.get('isFullscreen')) {
+          currentActivity
+            .getWindow()
+            .getInsetsController()
+            .show(android.view.WindowInsetsController.BEHAVIOR_DEFAULT);
+
+          currentActivity
+            .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         currentActivity
           .getWindow()
-          .getInsetsController()
-          .show(android.view.WindowInsetsController.BEHAVIOR_DEFAULT);
-
-        currentActivity
-          .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+          .clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+      } catch (e) {
+        console.log("Error: ", e);
       }
-
-      currentActivity
-        .getWindow()
-        .clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-      Application.android.off("activityBackPressed");
     });
   }
 
