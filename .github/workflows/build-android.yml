@@ -306,7 +306,7 @@ jobs:
         ns build android --release --copy-to . --env.snapshot --env.compileSnapshot --env.uglify --key-store-path ./AndroidKey.jks --key-store-alias AndroidKey --key-store-password AndroidPass --key-store-alias-password AndroidPass
 
         # Verify APK creation
-        if [ -f "app-universal-release.apk" ]; then
+        if [ -f "app-arm64-v8a-release.apk" ]; then
           echo "✅ Release APK created successfully"
           ls -lh app-universal-release.apk
         else
