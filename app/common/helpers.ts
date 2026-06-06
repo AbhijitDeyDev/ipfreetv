@@ -19,7 +19,7 @@ export function getAppVersion() {
     return packageInfo.versionName;
   } else if (__IOS__) {
     return String(NSBundle.mainBundle.objectForInfoDictionaryKey('CFBundleVersion'));
-  }
+  } else return "Unknown";
 }
 
 export function compareSemver(a: string, b: string) {

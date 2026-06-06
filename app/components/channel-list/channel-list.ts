@@ -29,7 +29,7 @@ function onChannelItemTap(
     case "tap":
       getTopFrame(page).navigate({
         moduleName: 'screens/video-page/video-page',
-        context: { source: channel.url },
+        context: { sources: channel.links },
         animated: true
       });
       break;

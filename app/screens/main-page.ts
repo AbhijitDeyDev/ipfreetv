@@ -10,9 +10,7 @@ export function onNavigatingTo(eventData: NavigationData) {
   page.androidStatusBarBackground = new Color("#08CB00");
 
   if (__ANDROID__) {
-    Utils.android
-      .getCurrentActivity()
-      .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    Utils.android.getCurrentActivity()?.setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
   }
 
   // Checking if update available

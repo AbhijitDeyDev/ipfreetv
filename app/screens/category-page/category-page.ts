@@ -9,9 +9,7 @@ export function navigatingTo(args: EventData) {
   const categories = getChannelCategories();
 
   if (__ANDROID__) {
-    Utils.android
-      .getCurrentActivity()
-      .setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    Utils.android.getCurrentActivity()?.setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
   }
 
   const viewModel = fromObject({

@@ -6,7 +6,7 @@
         class="bg-black">
         <VP:Video
             id="video_player"
-            src="{{source}}"
+            src="{{source.url}}"
             srcType="3"
             enableSubtitles="true"
             controls="true"
@@ -14,6 +14,14 @@
             fill="{{isFullscreen ? 'aspectFill' : 'default'}}"
             backgroundAudio="false"
             class="w-full h-full" />
+        <Button
+            id="menuBtn"
+            top="40"
+            left="10"
+            color="White"
+            backgroundColor="Transparent"
+            text="{{source.resolution + ' ▼'}}"
+            ontap="{{ changeResolution }}" />
         <Image
             id="fullscreen_toggle"
             src="{{'~/assets/icons/' + (isFullscreen ? 'fullscreen-exit.png' : 'fullscreen-enter.png')}}"
