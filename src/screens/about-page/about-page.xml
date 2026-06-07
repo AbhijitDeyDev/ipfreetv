@@ -1,0 +1,26 @@
+<Page
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:ab="components/action-bar"
+    navigatingTo="navigatingTo">
+    <GridLayout
+        columns="*"
+        rows="50, *">
+
+        <ab:action-bar
+            row="0"
+            title="About" />
+
+        <ScrollView row="1">
+            <StackLayout>
+                <Image
+                    src="~/assets/images/header.png"
+                    width="100%" />
+                <HtmlView
+                    html="{{aboutHtml}}"
+                    selectable="true"
+                    class="m-3" />
+            </StackLayout>
+        </ScrollView>
+
+    </GridLayout>
+</Page>

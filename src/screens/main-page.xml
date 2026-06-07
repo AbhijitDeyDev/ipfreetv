@@ -1,0 +1,27 @@
+<Page
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    navigatingTo="onNavigatingTo">
+    <TabView
+        androidTabsPosition="bottom"
+        androidSelectedTabHighlightColor="#ffffff"
+        tabTextColor="#253900">
+        <TabViewItem
+            title="Categories"
+            textTransform="capitalize"
+            iconSource="~/assets/icons/category-white.png">
+            <Frame defaultPage="screens/category-page/category-page" />
+        </TabViewItem>
+        <TabViewItem
+            title="Favorites"
+            textTransform="capitalize"
+            iconSource="~/assets/icons/favorite.png">
+            <Frame defaultPage="screens/favorite-page/favorite-page" />
+        </TabViewItem>
+        <TabViewItem
+            title="All Channels"
+            textTransform="capitalize"
+            iconSource="~/assets/icons/all-channel.png">
+            <Frame defaultPage="screens/all-channel-page/all-channel-page" />
+        </TabViewItem>
+    </TabView>
+</Page>
