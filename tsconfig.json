@@ -12,12 +12,13 @@
     "allowSyntheticDefaultImports": true,
     "lib": ["ESNext", "dom"],
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
-      "~/*": ["app/*"],
-      "@/*": ["app/*"]
+      "~/*": ["src/*"],
+      "@/*": ["src/*"]
     }
   },
-  "include": ["app/**/*"],
+  "include": ["src/**/*"],
   "files": ["./references.d.ts"],
   "exclude": ["node_modules", "platforms"]
 }
