@@ -1,0 +1,51 @@
+<GridLayout columns="*"
+            rows="50, *"
+            class="dark:bg-gray-800">
+
+       <header row="0"
+               title="IPFreeTV"
+               [hideBackBtn]="true"
+               [showSearch]="true"
+               searchBarHint="Search categories..."
+               (searchInputChange)="onSearchInputChange($event)"></header>
+
+       <ListView row="1"
+                 [items]="items()"
+                 (itemTap)="onCategoryTap($event)">
+              <ng-template let-item="item"
+                           let-i="index">
+                     <GridLayout padding="16"
+                                 columns="50, *">
+                            <NSImg src="~/assets/icons/category.png"
+                                   stretch="centerInside"
+                                   width="50"
+                                   height="50"
+                                   [automationText]="item.name" />
+                            <StackLayout col="1"
+                                         marginLeft="8">
+                                   <Label [text]="item.name"
+                                          textWrap="true"
+                                          class="font-bold text-2xl text-(--secondary) dark:text-white"></Label>
+                                   <Label [text]="item.count + ' channel' + (item.count > 1 ? 's' : '')"
+                                          textWrap="true"
+                                          class="dark:text-gray-200"></Label>
+                            </StackLayout>
+                     </GridLayout>
+              </ng-template>
+       </ListView>
+
+       <StackLayout row="1"
+                    verticalAlignment="center"
+                    class="p-8"
+                    [hidden]="!!items().length">
+              <Image src="~/assets/icons/category.png"
+                     width="50"
+                     height="50"
+                     tintColor="#08CB00"
+                     class="mb-5" />
+              <Label text="No category found"
+                     textWrap="true"
+                     textTransform="none"
+                     class="text-center text-lg mb-5"></Label>
+       </StackLayout>
+</GridLayout>

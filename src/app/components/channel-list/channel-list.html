@@ -1,0 +1,43 @@
+<CollectionView [items]="channels()" colWidth="50%" rowHeight="150" padding="4">
+    <ng-template let-item="item">
+        <GridLayout
+            columns="*"
+            rows="*"
+            padding="4"
+            height="150"
+            (tap)="onItemTap(item)"
+            (longPress)="onItemLongPress(item)"
+        >
+            <NSImg
+                [src]="item['tvg-logo']"
+                placeholderImageUri="~/assets/icons/hdtv.png"
+                failureImageUri="~/assets/icons/hdtv.png"
+                stretch="centerInside"
+                col="0"
+                row="0"
+                backgroundColor="rgba(0,100,0,0.4)"
+                height="150"
+            />
+            <StackLayout
+                col="0"
+                row="0"
+                verticalAlignment="bottom"
+                backgroundColor="rgba(0,0,0,0.7)"
+            >
+                <label
+                    [text]="item.name"
+                    textTransform="uppercase"
+                    class="font-bold text-[16px] text-white"
+                    margin="4 4 0 10"
+                ></label>
+                <label
+                    [text]="item['group-title'].split(';').join(', ')"
+                    textWrap="true"
+                    class="text-white"
+                    margin="0 4 4 10"
+                ></label>
+            </StackLayout>
+            <MDRipple rippleColor="black"></MDRipple>
+        </GridLayout>
+    </ng-template>
+</CollectionView>

@@ -1,15 +1,17 @@
-﻿@import 'tailwindcss';
+@import "tailwindcss";
+@config "../tailwind.config.js";
 
-:root{
-    --primary: #08CB00;
+:root {
+    --primary: #08cb00;
     --secondary: #253900;
     --text: #000000;
-    --bg: #EEEEEE;
-    --font-bold: 'Roboto', 'Roboto-Bold';
-    --font-regular: 'Roboto', 'Roboto-Regular';
+    --bg: #eeeeee;
+    --font-bold: "Roboto", "Roboto-Bold";
+    --font-regular: "Roboto", "Roboto-Regular";
 }
 
-label, button {
+label,
+button {
     font-family: "Roboto", "Roboto-Regular";
     font-weight: 400;
 }
@@ -17,4 +19,10 @@ label, button {
 .font-bold {
     font-family: "Roboto", "Roboto-Bold";
     font-weight: 700;
+}
+
+.lucide {
+    font-family: "lucide", "lucide";
+    font-weight: 400;
+    font-size: 25;
 }

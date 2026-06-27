@@ -1,0 +1,18 @@
+<GridLayout columns="*"
+            rows="50, *"
+            class="dark:bg-gray-800">
+
+    <header row="0"
+            title="About"></header>
+
+    <ScrollView row="1">
+        <StackLayout>
+            <NSImg src="~/assets/images/header.png"
+                   width="100%" />
+            <HtmlView [html]="aboutHtml()"
+                      selectable="true"
+                      class="m-3 dark:text-white" />
+        </StackLayout>
+    </ScrollView>
+
+</GridLayout>

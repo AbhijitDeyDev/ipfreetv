@@ -1,0 +1,29 @@
+<AbsoluteLayout class="bg-black">
+       <Video id="video_player"
+              [src]="source().url"
+              [srcType]="3"
+              [enableSubtitles]="true"
+              [controls]="true"
+              [fill]="isFullscreen() ? 'fill' : 'default'"
+              [autoplay]="true"
+              [backgroundAudio]="false"
+              class="w-full h-full"
+              (playbackReady)="onVideoPlayerReady($event)"></Video>
+       <button id="menuBtn"
+               top="40"
+               left="10"
+               color="White"
+               backgroundColor="Transparent"
+               [text]="source().resolution + ' ▼'"
+               (tap)="changeResolution($event)"></button>
+       @if(isFullscreenButtonVisible()) {
+       <NSImg id="fullscreen_toggle"
+              [src]="'~/assets/icons/' + (isFullscreen() ? 'fullscreen-exit.png' : 'fullscreen-enter.png')"
+              width="20"
+              height="20"
+              top="50"
+              [left]="fullscreenTogglePosition"
+              automationText="Fullscreen"
+              (tap)="toggleFullscreen($event)" />
+       }
+</AbsoluteLayout>

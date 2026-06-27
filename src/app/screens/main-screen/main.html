@@ -1,0 +1,41 @@
+<TabView
+    androidTabsPosition="bottom"
+    androidSelectedTabHighlightColor="#ffffff"
+    selectedTabTextColor="white"
+    tabTextColor="#eee"
+    tabTextFontSize="14"
+>
+    <ng-template
+        [tabItem]="{
+                    title: 'Categories',
+                    textTransform: 'capitalize',
+                    iconSource: '~/assets/icons/category-white.png'
+                    }"
+    >
+        <ContentView>
+            <category-screen></category-screen>
+        </ContentView>
+    </ng-template>
+    <ng-template
+        [tabItem]="{
+                    title: 'Favorites',
+                    textTransform: 'capitalize',
+                    iconSource: '~/assets/icons/favorite.png'
+                    }"
+    >
+        <ContentView>
+            <favorite-screen></favorite-screen>
+        </ContentView>
+    </ng-template>
+    <ng-template
+        [tabItem]="{
+                    title: 'All Channels',
+                    textTransform: 'capitalize',
+                    iconSource: '~/assets/icons/all-channel.png'
+                    }"
+    >
+        <ContentView>
+            <all-channel-screen></all-channel-screen>
+        </ContentView>
+    </ng-template>
+</TabView>

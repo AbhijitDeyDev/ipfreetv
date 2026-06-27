@@ -1,0 +1,41 @@
+<GridLayout
+    columns="auto, *, auto"
+    class="bg-(--primary) px-2.5"
+    [hidden]="searchMode()"
+>
+    @if(!hideBackBtn()){
+    <ripple-container col="0" (press)="goBack()">
+        <icon name="arrow-left" class="text-white px-2"></icon>
+    </ripple-container>
+    }@else {
+    <StackLayout col="0" width="20" class="mx-2"></StackLayout>
+    }
+    <label
+        col="1"
+        [text]="title()"
+        textTransform="none"
+        (tap)="goToAbout()"
+        class="text-center text-white text-xl"
+    ></label>
+    @if(showSearch()){
+    <ripple-container col="2" (press)="toggleSearchMode()">
+        <icon name="search" class="text-white px-2"></icon>
+    </ripple-container>
+    }@else {
+    <StackLayout col="2" width="20" class="mx-2"></StackLayout>
+    }
+</GridLayout>
+
+<GridLayout columns="auto, *" [hidden]="!searchMode()">
+    <ripple-container col="0" (press)="toggleSearchMode()">
+        <icon name="arrow-left" class="dark:text-white px-2"></icon>
+    </ripple-container>
+    <SearchBar
+        col="1"
+        [hint]="searchBarHint()"
+        [text]="searchBarText()"
+        (textChange)="onSearchInputChange($event)"
+        textFieldBackgroundColor="white"
+        textFieldCloseIconColor="red"
+    />
+</GridLayout>
