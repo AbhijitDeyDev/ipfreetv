@@ -17,6 +17,8 @@ import {
 import {
   AndroidActivityBackPressedEventData,
   Application,
+  Color,
+  Page,
 } from "@nativescript/core";
 
 @Component({
@@ -27,6 +29,7 @@ import {
 })
 export class Header implements OnInit, OnDestroy {
   private router = inject(RouterExtensions);
+  private page = inject(Page);
 
   title = input<string>();
   hideBackBtn = input<boolean>(false);
@@ -38,6 +41,9 @@ export class Header implements OnInit, OnDestroy {
   searchBarText = signal("");
 
   ngOnInit(): void {
+    this.page.actionBarHidden = true;
+    this.page.androidStatusBarBackground = new Color("#08cb00");
+
     if (__ANDROID__) {
       Application.android.on(
         Application.android.activityBackPressedEvent,
