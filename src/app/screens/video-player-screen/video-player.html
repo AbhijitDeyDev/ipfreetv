@@ -1,14 +1,21 @@
 <AbsoluteLayout class="bg-black">
        <Video id="video_player"
               [src]="source().url"
-              [srcType]="3"
               [enableSubtitles]="true"
               [controls]="true"
-              [fill]="isFullscreen() ? 'fill' : 'default'"
               [autoplay]="true"
               [backgroundAudio]="false"
-              class="w-full h-full"
+              width="100%"
+              height="100%"
               (playbackReady)="onVideoPlayerReady($event)"></Video>
+       @if(!isPlayerReady()){
+       <ActivityIndicator busy="true"
+                          [top]="centeredPixels.top"
+                          [left]="centeredPixels.left"
+                          width="50"
+                          height="50"
+                          color="white" />
+       }
        <button id="menuBtn"
                top="40"
                left="10"
@@ -16,7 +23,7 @@
                backgroundColor="Transparent"
                [text]="source().resolution + ' ▼'"
                (tap)="changeResolution($event)"></button>
-       @if(isFullscreenButtonVisible()) {
+       @if(isPlayerReady()) {
        <NSImg id="fullscreen_toggle"
               [src]="'~/assets/icons/' + (isFullscreen() ? 'fullscreen-exit.png' : 'fullscreen-enter.png')"
               width="20"

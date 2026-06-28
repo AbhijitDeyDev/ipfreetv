@@ -16,7 +16,7 @@ export default `
       <li>@nativescript/core</li>
       <li>@angular/core</li>
       <li>@nativescript/angular</li>
-      <li>@nstudio/nativescript-exoplayer</li>
+      <li>nativescript-videoplayer</li>
       <li>@nativescript-community/ui-collectionview</li>
       <li>@nativescript-community/ui-material-ripple</li>
       <li>@nativescript-community/ui-image</li>

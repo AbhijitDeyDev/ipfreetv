@@ -15,8 +15,8 @@
     "@nativescript-community/ui-material-ripple": "^7.3.2",
     "@nativescript/angular": "^21.0.0",
     "@nativescript/core": "~9.0.20",
-    "@nstudio/nativescript-exoplayer": "^6.2.0",
-    "nativescript-menu": "^1.1.7"
+    "nativescript-menu": "^1.1.7",
+    "nativescript-videoplayer": "^5.0.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~20.2.0",

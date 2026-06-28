@@ -1,14 +1,11 @@
 import { GITHUB_DETAILS, STORAGE_KEYS } from "@/app/common/constant";
 import { compareSemver, getAppVersion } from "@/app/common/helpers";
-import { Component, inject, NO_ERRORS_SCHEMA } from "@angular/core";
+import { Component, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptCommonModule } from "@nativescript/angular";
 import {
-  Application,
   ApplicationSettings,
-  Color,
   Dialogs,
-  Page,
-  Utils,
+  Utils
 } from "@nativescript/core";
 import { openUrl } from "@nativescript/core/utils";
 import { AllChannelScreen } from "../all-channel-screen/all-channel";
@@ -27,17 +24,8 @@ import { FavoriteScreen } from "../favorite-screen/favorite";
   ],
 })
 export class MainScreen {
-  private page = inject(Page);
-
   constructor() {
-    this.page.actionBarHidden = true;
-    // this.page.androidStatusBarBackground = new Color("#08CB00");
-
     if (__ANDROID__) {
-
-      // const window = Application.android.startActivity.getWindow();
-      // window.setStatusBarColor(new Color("#08CB00").android);
-
       Utils.android
         .getCurrentActivity()
         ?.setRequestedOrientation(
