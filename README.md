@@ -1,4 +1,4 @@
-![Header](app/assets/images/header.png)
+![Header](src/assets/images/header.png)
 
 # IPFreeTV
 
